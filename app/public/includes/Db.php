@@ -19,7 +19,7 @@ final class Db
         $dsn = Env::getRequired('DB_DSN');
         if ($driver === 'sqlite') {
             $path = substr($dsn, 7);
-            if ($path !== '' && $path[0] !== '/' && preg_match('#^[a-z]:#i', $path) !== 1) {
+            if ($path !== '' && $path !== ':memory:' && $path[0] !== '/' && preg_match('#^[a-z]:#i', $path) !== 1) {
                 $path = $baseDir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path);
             }
             $dsn = 'sqlite:' . $path;

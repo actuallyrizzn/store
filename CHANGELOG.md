@@ -2,9 +2,23 @@
 
 All notable changes to Clawed Road are documented here.
 
-**Versioning:** Clawed Road is **v2**—a new line, not a minor bump on Tochka. Calling it v1.something would've been dishonest: different stack, different roadmap. We're still in dev; **2.0.0** will be the first stable. Until then, pre-releases are **2.0.0-dev**. The original stack (Tochka Free Market, Go/Postgres/Redis) lives in `v1/` as reference and will stay once we ship a stable tested release.
+**Versioning:** Clawed Road is **v2**—a new line, not a minor bump on Tochka. Calling it v1.something would've been dishonest: different stack, different roadmap. We're still in dev; **2.0.0** will be the first stable. Until then, pre-releases use **minor version bumps** (2.0.0-dev, 2.1.0-dev, …). The original stack (Tochka Free Market, Go/Postgres/Redis) lives in `v1/` as reference and will stay once we ship a stable tested release.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+---
+
+## [2.1.0-dev] - 2026-01-31
+
+### Added
+
+- **Documentation (app/)** — Full docs for the PHP/Python app: `app/DOCUMENTATION.md` (overview, quick start, API reference, schema, security, deployment, troubleshooting); `app/docs/` with ARCHITECTURE.md, API_GUIDE.md, DATABASE.md, DEPLOYMENT.md, DEVELOPER_GUIDE.md, README index, CHANGELOG; `app/DOCUMENTATION_INDEX.md` for navigation. README.md updated with links and quick reference.
+- **PHP test suite** — Unit, integration, and E2E tests for the PHP side. PHPUnit 10.5 in `app/` with `composer.json`; `app/phpunit.xml` (Unit, Integration, E2E suites, coverage config). Unit tests for Env, Db, User, Session, ApiKey, Config, StatusMachine, bootstrap (`getApiKeyFromRequest`), api_helpers. Integration tests for Schema, Views, Config. E2E tests via `tests/run_request.php` (request file–based runner) for index, login, register, logout, stores, items, transactions, auth-user, deposits, disputes, admin config/tokens, schema. **109 tests, 205 assertions.** `app/tests/README.md` for run instructions; coverage requires PCOV or Xdebug.
+- **Db :memory: support** — `app/public/includes/Db.php` accepts `sqlite::memory:` DSN for tests (path not prefixed with baseDir).
+
+### Changed
+
+- **app/README.md** — Expanded with overview, architecture, quick start, directory structure, config summary, documentation links, security notes.
 
 ---
 
@@ -48,4 +62,5 @@ First changelog entry. Clawed Road is **in development**—not yet stable. **2.0
 
 ---
 
+[2.1.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.1.0-dev
 [2.0.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.0.0-dev

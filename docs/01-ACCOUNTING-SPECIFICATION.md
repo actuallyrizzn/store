@@ -10,7 +10,7 @@ This document exhaustively describes all money and accounting flows in the curre
 
 ### 1.1 Transaction
 
-- **Identity**: `Transaction.Uuid` (primary key). For ETH/BTC this is also the **escrow address** (where buyer sends funds).
+- **Identity**: `Transaction.Uuid` (primary key). **Re-implementation (binding):** PHP creates the transaction **without** an escrow address; the escrow address is a separate field filled by **Python (cron)** after creation. Until Python writes it, `escrow_address` is null and the UI shows "Escrow address pending — may take up to 60 seconds." See [05-ARCHITECTURE-LEMP-PYTHON.md](05-ARCHITECTURE-LEMP-PYTHON.md) §8. The escrow address is where the buyer sends funds.
 - **Type**: `bitcoin` or `ethereum`. Target: **ethereum** only (and possibly a generic `evm` or per-token type).
 - **Parties**: `BuyerUuid`, `StoreUuid` (vendor), optional `DisputeUuid`.
 - **Package**: `PackageUuid` → one order (item + quantity + shipping). Price is fixed at creation in crypto (BTC/ETH) via `Package.GetPrice(currency)` and shipping in that currency.

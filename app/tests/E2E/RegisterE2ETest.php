@@ -11,25 +11,32 @@ final class RegisterE2ETest extends E2ETestCase
         $this->assertStringContainsString('register.php', $res['body']);
     }
 
-    public function testPostRegisterInvalidUsernameReturns400(): void
+    public function testPostRegisterInvalidUsernameShowsFormWithError(): void
     {
         $res = self::runRequest(['method' => 'POST', 'uri' => 'register.php', 'get' => [], 'post' => ['username' => '', 'password' => 'password123'], 'headers' => []]);
-        $this->assertSame(400, $res['code']);
+        $this->assertSame(200, $res['code']);
         $this->assertStringContainsString('Invalid username', $res['body']);
     }
 
-    public function testPostRegisterShortPasswordReturns400(): void
+    public function testPostRegisterShortPasswordShowsFormWithError(): void
     {
         $res = self::runRequest(['method' => 'POST', 'uri' => 'register.php', 'get' => [], 'post' => ['username' => 'newuser', 'password' => 'short'], 'headers' => []]);
-        $this->assertSame(400, $res['code']);
+        $this->assertSame(200, $res['code']);
         $this->assertStringContainsString('at least 8', $res['body']);
     }
 
-    public function testPostRegisterSuccessReturns200(): void
+    public function testPostRegisterSuccessRedirectsToMarketplace(): void
     {
         $username = 'e2e_' . substr(bin2hex(random_bytes(4)), 0, 8);
         $res = self::runRequest(['method' => 'POST', 'uri' => 'register.php', 'get' => [], 'post' => ['username' => $username, 'password' => 'password123'], 'headers' => []]);
-        $this->assertSame(200, $res['code'], 'Response: ' . ($res['body'] ?? ''));
-        $this->assertStringContainsString('Registered as', $res['body']);
+        $this->assertSame(302, $res['code'], 'Response: ' . ($res['body'] ?? ''));
+        $hasLocation = false;
+        foreach ($res['headers'] ?? [] as $h) {
+            if (stripos($h, 'Location:') === 0 && strpos($h, 'marketplace') !== false) {
+                $hasLocation = true;
+                break;
+            }
+        }
+        $this->assertTrue($hasLocation, 'Expected redirect to marketplace');
     }
 }

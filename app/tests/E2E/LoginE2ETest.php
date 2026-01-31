@@ -13,17 +13,25 @@ final class LoginE2ETest extends E2ETestCase
         $this->assertStringContainsString('password', $res['body']);
     }
 
-    public function testPostLoginMissingCredentialsReturns400(): void
+    public function testPostLoginMissingCredentialsShowsFormWithError(): void
     {
         $res = self::runRequest(['method' => 'POST', 'uri' => 'login.php', 'get' => [], 'post' => ['username' => '', 'password' => ''], 'headers' => []]);
-        $this->assertSame(400, $res['code']);
+        $this->assertSame(200, $res['code']);
         $this->assertStringContainsString('Missing', $res['body']);
     }
 
-    public function testPostLoginInvalidCredentialsReturns401(): void
+    public function testPostLoginInvalidCredentialsShowsFormWithError(): void
     {
         $res = self::runRequest(['method' => 'POST', 'uri' => 'login.php', 'get' => [], 'post' => ['username' => 'nonexistent_user_xyz', 'password' => 'wrong'], 'headers' => []]);
-        $this->assertSame(401, $res['code']);
+        $this->assertSame(200, $res['code']);
         $this->assertStringContainsString('Invalid', $res['body']);
+    }
+
+    public function testPostLoginValidCredentialsRedirects(): void
+    {
+        $res = self::runRequest(['method' => 'POST', 'uri' => 'login.php', 'get' => [], 'post' => ['username' => 'admin', 'password' => 'admin'], 'headers' => []]);
+        $this->assertSame(302, $res['code']);
+        $cookies = self::parseCookiesFromResponse($res);
+        $this->assertNotEmpty($cookies, 'Expected Set-Cookie after login');
     }
 }

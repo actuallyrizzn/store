@@ -21,4 +21,41 @@ abstract class E2ETestCase extends TestCase
         @unlink($responseFile);
         return is_string($content) ? (json_decode($content, true) ?? ['code' => 0, 'body' => '', 'headers' => []]) : ['code' => 0, 'body' => '', 'headers' => []];
     }
+
+    /** Parse Set-Cookie from response headers. Headers are from headers_list() format: ["Name: Value", ...]. Returns [cookie_name => cookie_value]. */
+    protected static function parseCookiesFromResponse(array $res): array
+    {
+        $headers = $res['headers'] ?? [];
+        $cookies = [];
+        foreach ($headers as $h) {
+            if (stripos($h, 'Set-Cookie:') === 0) {
+                $val = trim(substr($h, 11));
+                $eq = strpos($val, '=');
+                if ($eq !== false) {
+                    $name = trim(substr($val, 0, $eq));
+                    $rest = substr($val, $eq + 1);
+                    $semi = strpos($rest, ';');
+                    $cookieVal = $semi !== false ? trim(substr($rest, 0, $semi)) : trim($rest);
+                    $cookies[$name] = $cookieVal;
+                }
+            }
+        }
+        return $cookies;
+    }
+
+    /** POST login.php with credentials; returns cookies array for use in runRequest(['cookies' => ...]). Asserts 302. */
+    protected static function loginAs(string $username, string $password): array
+    {
+        $res = self::runRequest([
+            'method' => 'POST',
+            'uri' => 'login.php',
+            'get' => [],
+            'post' => ['username' => $username, 'password' => $password],
+            'headers' => [],
+        ]);
+        if ($res['code'] !== 302) {
+            return [];
+        }
+        return self::parseCookiesFromResponse($res);
+    }
 }

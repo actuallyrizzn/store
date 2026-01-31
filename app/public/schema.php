@@ -14,6 +14,7 @@ require $inc . 'Db.php';
 require $inc . 'Schema.php';
 require $inc . 'Views.php';
 require $inc . 'Config.php';
+require $inc . 'User.php';
 
 Env::load($baseDir);
 
@@ -40,6 +41,23 @@ $views->run();
 
 $config = new Config($pdo);
 $config->seedDefaults();
+
+// Optional: seed admin user from .env (ADMIN_USERNAME, ADMIN_PASSWORD) for dev/demo
+$adminUsername = Env::get('ADMIN_USERNAME');
+$adminPassword = Env::get('ADMIN_PASSWORD') ?? 'admin';
+if ($adminUsername !== null && $adminUsername !== '') {
+    $userRepo = new User($pdo);
+    $existing = $userRepo->findByUsername($adminUsername);
+    if ($existing === null) {
+        $userRepo->create(User::generateUuid(), $adminUsername, $adminPassword, User::ROLE_ADMIN, null);
+    } else {
+        $pdo->prepare('UPDATE users SET role = ? WHERE uuid = ?')->execute([User::ROLE_ADMIN, $existing['uuid']]);
+        if ($adminPassword !== '') {
+            $hash = password_hash($adminPassword, PASSWORD_BCRYPT, ['cost' => 12]);
+            $pdo->prepare('UPDATE users SET passphrase_hash = ? WHERE uuid = ?')->execute([$hash, $existing['uuid']]);
+        }
+    }
+}
 
 if (php_sapi_name() === 'cli') {
     echo "Schema, views, and config seeded.\n";

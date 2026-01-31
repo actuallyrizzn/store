@@ -13,7 +13,7 @@ if (!$currentUser) {
     exit;
 }
 
-$stmt = $pdo->prepare('SELECT * FROM v_current_cumulative_transaction_statuses WHERE buyer_uuid = ? ORDER BY max_timestamp DESC LIMIT 50');
+$stmt = $pdo->prepare('SELECT * FROM v_current_cumulative_transaction_statuses WHERE buyer_uuid = ? ORDER BY updated_at DESC LIMIT 50');
 $stmt->execute([$currentUser['uuid']]);
 $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

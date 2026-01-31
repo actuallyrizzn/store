@@ -22,6 +22,8 @@ final class Env
         'SESSION_SALT',
         'COOKIE_ENCRYPTION_SALT',
         'CSRF_SALT',
+        'ADMIN_USERNAME',
+        'ADMIN_PASSWORD',
     ];
 
     public static function load(string $baseDir): void

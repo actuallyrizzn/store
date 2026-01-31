@@ -3,14 +3,21 @@
 declare(strict_types=1);
 
 /**
- * E2E: GET /
+ * E2E: GET index redirects to marketplace.
  */
 final class IndexE2ETest extends E2ETestCase
 {
-    public function testGetIndexReturnsOk(): void
+    public function testGetIndexRedirectsToMarketplace(): void
     {
         $res = self::runRequest(['method' => 'GET', 'uri' => 'index.php', 'get' => [], 'post' => [], 'headers' => []]);
-        $this->assertSame(200, $res['code']);
-        $this->assertSame('OK', trim($res['body']));
+        $this->assertSame(302, $res['code']);
+        $hasLocation = false;
+        foreach ($res['headers'] ?? [] as $h) {
+            if (stripos($h, 'Location:') === 0 && strpos($h, 'marketplace') !== false) {
+                $hasLocation = true;
+                break;
+            }
+        }
+        $this->assertTrue($hasLocation, 'Expected Location header to marketplace');
     }
 }

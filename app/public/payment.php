@@ -18,7 +18,7 @@ if (!$currentUser) {
     exit;
 }
 
-$stmt = $pdo->prepare('SELECT * FROM v_current_cumulative_transaction_statuses WHERE transaction_uuid = ?');
+$stmt = $pdo->prepare('SELECT * FROM v_current_cumulative_transaction_statuses WHERE uuid = ?');
 $stmt->execute([$uuid]);
 $tx = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$tx) {

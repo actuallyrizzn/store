@@ -44,6 +44,8 @@ $currentUser = $currentUser ?? null;
     <a href="/vendors.php">Vendors</a>
     <?php if ($currentUser): ?>
         <a href="/payments.php">My orders</a>
+        <a href="/create-store.php">Create store</a>
+        <?php if (($currentUser['role'] ?? '') === 'admin'): ?><a href="/admin/index.php">Admin</a><?php endif; ?>
         <a href="/logout.php">Logout (<?= htmlspecialchars($currentUser['username']) ?>)</a>
     <?php else: ?>
         <a href="/login.php">Login</a>

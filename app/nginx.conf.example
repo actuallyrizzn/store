@@ -1,16 +1,20 @@
-# Example Nginx server block for MVP marketplace (LEMP).
+# Example Nginx server block for Clawed Road (LEMP).
 # Document root = public/ (synced folder). PHP-FPM handles .php.
-# Copy and adapt. Only public/ and db/ sync to LEMP.
+# LEMP design: URL path = file path. One script per endpoint; no front controller for API/admin.
+#
+# API and admin URLs include .php: /api/stores.php, /admin/config.php, etc.
+# Only / is served by index.php (try_files fallback). Copy and adapt.
 
 server {
     listen 80;
     server_name localhost;
-    root /path/to/store/public;
+    root /path/to/store/app/public;
 
     index index.php;
 
+    # / → index.php; /api/foo.php and /admin/bar.php served as real files (location ~ \.php$)
     location / {
-        try_files $uri $uri/ /index.php?$query_string;
+        try_files $uri $uri/ /index.php;
     }
 
     location ~ \.php$ {

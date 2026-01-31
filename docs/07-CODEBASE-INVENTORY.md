@@ -86,7 +86,7 @@
 - **Receipts**: `models_receipt.go`.  
 - **Referral**: `models_referral.go`; created in BTC/ETH Release paths.  
 - **Deposits**: `models_deposit.go` (Update, Withdraw, DepositHistory).  
-- **User wallet → escrow**: `models_transaction.go` FundFromUserWallets; wallet send in `models_wallet_*.go`.  
+- **User wallet → escrow**: `models_transaction.go` FundFromUserWallets; wallet send in `models_wallet_*.go`. **Reference only; out of MVP** (08: buyer sends from external wallet only).  
 - **Cron**: `tasks_transaction.go`, `tasks_wallet.go`.  
 - **Views (current status)**: `models_transaction_db_view.go` (setupTransactionStatusesView, v_current_*, vm_*).  
 

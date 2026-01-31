@@ -51,10 +51,10 @@ Accounting spec (01) still applies: same status machine, completion threshold, r
 - **Current ETH**: Vendor gets `(1 - commission)`; buyer inviter gets `commission * inviterPercent`; remainder to `EthereumCommissionWallet`.
 - **Target**: Same split logic; all payouts in ETH (or in same token as the transaction). Commission wallet and inviter addresses must be EVM (0x...). Python service performs multi-recipient send (or multiple txs) so percents sum to 1.0.
 
-## 8. User Wallets (Buyer Funding)
+## 8. User Wallets (Buyer Funding) — MVP: External Only (08)
 
-- **Current**: User has Ethereum (and Bitcoin) wallets; balance from PaymentGate; send from wallet to escrow for “fund from wallet”.
-- **Target (08)**: **Buyer sends from external wallet only** in MVP. No in-app user wallets for funding. We show escrow address (and optional QR); buyer sends from their own wallet (MetaMask, etc.). No “fund from user wallet”; no keys/addresses we hold for buyers. Simplifies MVP.
+- **Current (v1 reference)**: User has Ethereum (and Bitcoin) wallets; balance from PaymentGate; fund-from-wallet sends from user wallet to escrow for “fund from wallet”.
+- **MVP (08)**: **Buyer sends from external wallet only.** No in-app buyer wallets; no fund-from-wallet in MVP. Show escrow address (and optional QR); buyer pays from their own wallet (MetaMask, etc.). No “fund from user wallet”; Do **not** implement buyer hot wallets or FundFromUserWallets in MVP. **Roadmap**: In-app user wallets and fund-from-wallet can be added later.
 
 ## 9. Deposits (Vendor)
 
@@ -71,4 +71,4 @@ Accounting spec (01) still applies: same status machine, completion threshold, r
 - **Remove**: `modules/apis/payments_bitcoin.go`, all `*bitcoin*` in marketplace (models, views, tasks, router).
 - **Use as reference**: `modules/apis/payments_ethereum.go` (replace HTTP PaymentGate with Alchemy in Python); `models_transaction_cc_ethereum.go` (split logic); `models_wallet_ethereum.go` (balance/send pattern).
 
-Python service should implement: address generation, balance (ETH + token), send (single and multi-recipient), and expose a small internal API or queue for PHP to request “create escrow”, “get balance”, “release”, “cancel”, “partial refund”, “withdraw deposit”, “send from user wallet”.
+Python service should implement (MVP): address generation, balance (ETH + token), send (single and multi-recipient). PHP/DB contract: “create escrow”, “get balance”, “release”, “cancel”, “partial refund”, “withdraw deposit”. **Not in MVP:** “send from user wallet” (08: buyer sends from external wallet only).

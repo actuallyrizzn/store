@@ -2,7 +2,7 @@
 
 This document exhaustively describes all money and accounting flows in the current Tochka codebase so they can be re-implemented correctly in PHP + Python. **Treat this as the single source of truth for accounting.**
 
-**Planning decisions (08-PLANNING-DECISIONS-QA.md):** All hardcoded values below (completion tolerance, partial-refund splits, etc.) are **defaults**; they must be **configurable in an admin panel**. **Vendor referral** is **not in MVP** (roadmap only).
+**Planning decisions (08-PLANNING-DECISIONS-QA.md):** All hardcoded values below are **defaults** (configurable in admin). **Vendor referral** is **roadmap only**. **In-app buyer wallets / “fund from wallet” are not in MVP** (08: buyer sends from external wallet only); treat those sections as **Roadmap**.
 
 ---
 
@@ -115,7 +115,7 @@ Referral is paid **at Release** to inviter’s wallet (Bitcoin or Ethereum addre
 ## 4. Cancel Flow (Refund to Buyer)
 
 - **From**: Escrow address.
-- **To**: Buyer’s wallet (e.g. `FindRecentEthereumWallet().PublicKey`).
+- **To**: Buyer’s refund address. **Reference (v1)**: e.g. `FindRecentEthereumWallet().PublicKey` (in-app wallet). **MVP (08)**: Buyer-provided refund address (e.g. at checkout or on profile); no in-app buyer wallet.
 - **Percent**: 1.0 to buyer.
 - **After**: `SetTransactionStatus("CANCELLED", currentAmount, comment, userUuid, &receipt)`.
 
@@ -159,12 +159,12 @@ Deposits are **not** part of the main escrow accounting; they are vendor-side ba
 
 ---
 
-## 8. User Wallets (In-App Wallets)
+## 8. User Wallets (In-App) — **Roadmap, Not MVP (08)**
 
-- **UserBitcoinWallet** / **UserEthereumWallet**: PublicKey = address, UserUuid. Balance from chain (APIs) and stored in Balance tables (append-on-change).
-- **Fund from wallet**: Buyer can pay for a transaction from their in-app wallet: `Transaction.FundFromUserWallets(user)` sends from user wallet to escrow address, then sets status PENDING with comment and receipt.
-
-For EVM-only: only Ethereum (and possibly token) wallets; balance and send via Alchemy (or Python service).
+- **Reference (v1)**: UserBitcoinWallet / UserEthereumWallet; `Transaction.FundFromUserWallets(user)` sends from user wallet to escrow, then sets PENDING. Balance from chain, stored in Balance tables.
+- **MVP (08)**: **Buyer sends from external wallet only.** No in-app buyer wallets; no “fund from user wallet.” We show escrow address (and optional QR); buyer pays from their own wallet (MetaMask, etc.). Do **not** implement FundFromUserWallets or buyer hot wallets in MVP.
+- **Cancel/refund in MVP**: Refund to buyer on Cancel/partial refund uses a **buyer-provided refund address** (e.g. at checkout or on profile), not an in-app wallet.
+- **Roadmap**: In-app user wallets and “fund from wallet” can be added later; wallet balance views (10.3) are then relevant.
 
 ---
 
@@ -199,9 +199,9 @@ All “find by status” and “current status” logic use these views so that 
 - **vm_shipping_statuses**: Materialized copy of v_shipping_statuses (refreshed periodically).
 - **vm_thread_counts**: Thread counts for transactions (messages).
 
-### 10.3 Wallet balance views
+### 10.3 Wallet balance views (Roadmap, not MVP)
 
-- **v_user_bitcoin_wallet_balances** / **v_user_ethereum_wallet_balances**: Per user, sum of latest balance per wallet (using “max created_at per public_key” for balance rows).
+- **v_user_bitcoin_wallet_balances** / **v_user_ethereum_wallet_balances**: Per user, sum of latest balance per wallet. **Not needed in MVP** (08: no in-app buyer wallets). Implement when/if “fund from wallet” is added.
 
 ---
 
@@ -235,7 +235,7 @@ From `settings.json.example` / `MarketplaceSettings` (reference):
 
 ## 13. Files to Mirror Logic From (Go)
 
-- `modules/marketplace/models_transaction.go` — Status, amounts, Release/Cancel/Fail/Freeze, FundFromUserWallets.
+- `modules/marketplace/models_transaction.go` — Status, amounts, Release/Cancel/Fail/Freeze. **Omit FundFromUserWallets in MVP** (08: buyer external-wallet-only).
 - `modules/marketplace/models_transaction_cc_bitcoin.go` — Release/Cancel/PartialRefund (BTC); use as reference for percent splits.
 - `modules/marketplace/models_transaction_cc_ethereum.go` — Release/Cancel/PartialRefund (ETH); template for EVM.
 - `modules/marketplace/models_receipt.go` — PaymentReceipt creation.

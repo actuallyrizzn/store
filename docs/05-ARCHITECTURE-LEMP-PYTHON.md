@@ -5,7 +5,7 @@
 ## 1. Target Stack
 
 - **Website**: **Plain PHP** (no framework) on **LEMP** (Linux, Nginx, PHP). Serves all user-facing pages, forms, and the **public API** (primarily for **agents**). **DB**: **SQLite** for MVP, **MariaDB** for prod. **Sessions**: PHP-owned (file or DB), not Redis. K.I.S.S.
-- **Crypto**: **Python** runs as **cron** (scheduled job; runs, does work, exits). **Internal only** (no public HTTP). Handles EVM: HD-derived escrow addresses, balance checks, sends (release/cancel/partial refund, deposits, user wallet sends). Uses **Alchemy API** for chain access. No long-running async loop.
+- **Crypto**: **Python** runs as **cron** (scheduled job; runs, does work, exits). **Internal only** (no public HTTP). Handles EVM: HD-derived escrow addresses, balance checks, sends (release/cancel/partial refund, deposit withdraw). **No “fund from user wallet” in MVP** (08: buyer sends from external wallet only). Uses **Alchemy API** for chain access. No long-running async loop.
 
 ## 2. Boundaries
 
@@ -18,7 +18,7 @@
 ### 2.2 Python (Cron)
 
 - **Owns**: **Single mnemonic** (in .env); **HD-derived** escrow keys; Alchemy client; signing and sending logic.
-- **Does**: On each cron run: generate escrow addresses (derived); get balances (ETH + token); send ETH/token (release, cancel, partial refund, deposit withdraw, “fund from user wallet”). Writes status and receipts to DB.
+- **Does**: On each cron run: generate escrow addresses (derived); get balances (ETH + token); send ETH/token (release, cancel, partial refund, deposit withdraw). **Does not** send from user-held wallets in MVP (08: buyer funding is external-wallet-only). Writes status and receipts to DB.
 - **Does not**: Expose HTTP to the internet; does not own user/session/auth. Runs on schedule and exits (no long-running process).
 
 ### 2.3 Database (SQLite / MariaDB, .env configurable)

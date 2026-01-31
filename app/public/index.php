@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * GET / — Home. LEMP: document root serves this; API and admin are one script per endpoint (.php in URL).
+ * GET / — Redirect to marketplace (like v1 Index → /marketplace). LEMP: document root.
  */
-header('Content-Type: text/plain; charset=utf-8');
-echo 'OK';
+header('Location: /marketplace.php', true, 302);
+exit;

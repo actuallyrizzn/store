@@ -38,13 +38,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session->start();
     $session->setUser($user);
     $userRepo->updateLastLogin($user['uuid']);
+    $redirect = trim((string) ($_POST['redirect'] ?? $_GET['redirect'] ?? ''));
+    if ($redirect !== '' && $redirect[0] === '/' && strpos($redirect, '//') === false) {
+        header('Location: ' . $redirect, true, 302);
+        return;
+    }
     header('Content-Type: text/plain; charset=utf-8');
     echo 'Logged in as ' . $user['username'];
     return;
 }
 
+$redirect = trim((string) ($_GET['redirect'] ?? ''));
+$redirectField = $redirect !== '' && $redirect[0] === '/' && strpos($redirect, '//') === false
+    ? '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirect) . '">' : '';
 header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE html><html><body><form method="post" action="/login.php">';
+echo $redirectField;
 echo 'Username: <input name="username" type="text"><br>';
 echo 'Password: <input name="password" type="password"><br>';
 echo '<button type="submit">Login</button></form></body></html>';

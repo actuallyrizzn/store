@@ -1,0 +1,143 @@
+Metadata-Version: 2.4
+Name: marketplace-sdk
+Version: 1.0.0
+Summary: Python SDK for the Marketplace REST API
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.28.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+
+# Marketplace API Python SDK
+
+Python client for the Marketplace REST API (LEMP PHP app). Supports API key and session authentication.
+
+## Install
+
+From the workspace root:
+
+```bash
+pip install -e sdk
+```
+
+Or add to your project:
+
+```bash
+pip install ./sdk
+```
+
+## Quick start
+
+### API key (programmatic)
+
+```python
+from sdk import MarketplaceClient
+
+client = MarketplaceClient(
+    base_url="https://market.example.com",
+    api_key="your-64-char-hex-api-key",
+)
+
+# Public endpoints (no auth)
+stores = client.list_stores()
+items = client.list_items(store_uuid="optional-filter")
+
+# Authenticated endpoints (API key or session)
+transactions = client.list_transactions()
+user = client.get_auth_user()
+```
+
+### Session (login + cookies)
+
+Use session auth for creating stores, items, transactions, and managing API keys:
+
+```python
+from sdk import MarketplaceClient
+
+client = MarketplaceClient(base_url="http://localhost")
+client.login("alice", "secret123")
+
+# Create store (session required)
+r = client.create_store("MyStore", description="My shop", vendorship_agree=True)
+store_uuid = r["uuid"]
+
+# Create item
+client.create_item("Widget", store_uuid=store_uuid, description="A widget")
+
+# Create API key (save the returned api_key; it cannot be retrieved later)
+key_data = client.create_key("My API Key")
+print(key_data["api_key"])
+
+# Create transaction (session required)
+client.create_transaction(
+    package_uuid="pkg-uuid",
+    required_amount=0.1,
+    chain_id=1,
+    currency="ETH",
+    refund_address="0x...",  # optional
+)
+```
+
+### Admin
+
+Use the same client after logging in as an admin:
+
+```python
+config = client.get_config()
+client.update_config(pending_duration="48h", completion_tolerance="0.05")
+tokens = client.list_tokens()
+client.add_token(chain_id=1, symbol="ETH")
+client.remove_token(token_id=2)
+```
+
+## API coverage
+
+| Area | Methods |
+|------|--------|
+| Health / Auth | `health()`, `register()`, `login()`, `logout()` |
+| Public | `list_stores()`, `list_items(store_uuid?)` |
+| Stores | `create_store()` |
+| Items | `create_item()` |
+| Transactions | `list_transactions()`, `create_transaction()` |
+| API keys | `list_keys()`, `create_key()`, `revoke_key()`, `get_auth_user()` |
+| Deposits / Disputes | `list_deposits()`, `list_disputes()` |
+| Admin | `get_config()`, `update_config()`, `list_tokens()`, `add_token()`, `remove_token()` |
+
+## Exceptions
+
+The SDK raises typed exceptions on HTTP errors:
+
+- `ValidationError` — 400
+- `UnauthorizedError` — 401
+- `ForbiddenError` — 403
+- `NotFoundError` — 404
+- `ConflictError` — 409
+- `RateLimitError` — 429 (retry with backoff)
+- `ServerError` — 5xx
+- `MarketplaceAPIError` — base; others inherit from it
+
+All carry `.status_code` and `.response_body` where applicable.
+
+```python
+from sdk import MarketplaceClient, RateLimitError, UnauthorizedError
+
+client = MarketplaceClient(base_url="http://localhost", api_key="bad")
+try:
+    client.list_transactions()
+except UnauthorizedError as e:
+    print(e.message, e.status_code)
+except RateLimitError:
+    # implement backoff
+    pass
+```
+
+## Requirements
+
+- Python 3.8+
+- `requests`
+
+## Docs
+
+API reference: [docs/app/API_GUIDE.md](../docs/app/API_GUIDE.md)

@@ -1,0 +1,4 @@
+# Marketplace SDK - install from workspace or pip
+# From workspace root: pip install -e sdk
+# Or: pip install marketplace-sdk (if published)
+marketplace-sdk>=1.0.0

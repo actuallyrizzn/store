@@ -8,6 +8,44 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.3.0-dev] - 2026-01-31
+
+### Added
+
+- **E2E coverage at all user levels** — Full-stack E2E tests (`app/tests/E2E/FullStackE2ETest.php`) for anonymous, customer (session), vendor (store + item), and admin: public pages and API 401s when unauthenticated; payments, create-store, API keys/stores/items/transactions/deposits/disputes with session; admin dashboard, config, tokens with admin session; customer → admin config 403; book/payment 404 for invalid ids. **149 tests** (Unit + Integration + E2E).
+- **Session auth in E2E runner** — `app/tests/run_request.php` accepts `cookies` in the request JSON and adds `session_name` / `session_id` to the response when a session is active (so login/register work in CLI where `headers_list()` is empty). `E2ETestCase::loginAs()` and `parseCookiesFromResponse()` for session-based flows.
+- **Admin user seed** — Optional `ADMIN_USERNAME` / `ADMIN_PASSWORD` in `.env`; schema and test bootstrap create or update that user as admin for dev/demo and E2E.
+- **Admin dashboard (HTML)** — `app/public/admin/index.php`: config table and accepted tokens list; admin-only; redirects to login when not authenticated.
+- **Create store (vendor) page** — `app/public/create-store.php` and form: storename, description, vendorship agreement; session required; redirects to store on success. Header links: "Create store" when logged in, "Admin" when role is admin.
+
+### Changed
+
+- **E2E expectations** — Index and logout assert 302 (no Location in CLI). Login and register accept `session_name`/`session_id` from response when Set-Cookie is unavailable. Register success asserts 302.
+- **Test bootstrap** — Seeds admin user after schema/config so E2E can log in as admin. Test `.env` includes `ADMIN_USERNAME` and `ADMIN_PASSWORD`. `Env` allows `ADMIN_USERNAME` / `ADMIN_PASSWORD`.
+
+### Fixed
+
+- **payments.php / payment.php** — Use view column `updated_at` for ORDER BY and `uuid` for WHERE (not `max_timestamp` / `transaction_uuid`); fixes 500 when viewing My orders.
+- **admin/index.php** — Cast `chain_id` and `symbol` to string before `htmlspecialchars()` (SQLite can return int).
+- **api/items.php** — Use `User::generateUuid()` instead of `$userRepo->generateUuid()`.
+
+---
+
+## [2.2.0-dev] - 2026-01-31
+
+### Added
+
+- **Python SDK** — `sdk/` package (`marketplace-sdk`) for the Marketplace REST API: API key and session auth, all endpoints (health, stores, items, transactions, keys, deposits, disputes, admin config/tokens). Typed exceptions (ValidationError, UnauthorizedError, RateLimitError, etc.). Install: `pip install -e sdk`. See [sdk/README.md](sdk/README.md).
+- **SMCP plugin** — `smcp_plugin/marketplace/` MCP plugin exposing marketplace as tools (e.g. `marketplace__list-stores`, `marketplace__create-transaction`). Commands: health, list-stores, list-items, get-auth-user, list-transactions, create-store, create-item, create-transaction, list-keys, create-key, revoke-key, list-deposits, list-disputes. Uses SDK; installable into Sanctum SMCP `plugins/`. See [smcp_plugin/marketplace/README.md](smcp_plugin/marketplace/README.md) and [INSTALL.md](smcp_plugin/marketplace/INSTALL.md).
+- **Agents / SDK / MCP docs** — [docs/AGENTS-SDK-SMCP.md](docs/AGENTS-SDK-SMCP.md): intro to SDK, SMCP plugin, and how to run the official **Sanctum SMCP** server ([sanctumos/smcp](https://github.com/sanctumos/smcp)) with SSE or STDIO so any MCP-compatible agent (Letta, Claude Desktop, Cursor, etc.) can use marketplace tools.
+
+### Changed
+
+- **Documentation location** — All app docs moved to workspace root `docs/app/`: main doc as [docs/app/README.md](docs/app/README.md), INDEX, REFERENCE, ARCHITECTURE, API_GUIDE, DATABASE, DEPLOYMENT, DEVELOPER_GUIDE, CHANGELOG. Removed `app/DOCUMENTATION.md`, `app/DOCUMENTATION_INDEX.md`, and `app/docs/`. [docs/README.md](docs/README.md) indexes planning and app; single docs entry point.
+- **Root and app READMEs** — Conspicuous **SDK & MCP (Agents)** section in root README with table (SDK, SMCP plugin, AGENTS-SDK-SMCP doc) and link to Sanctum SMCP. Docs table updated with Agents/SDK/MCP, SDK, and SMCP plugin. [docs/README.md](docs/README.md) and [app/README.md](app/README.md) link to agents/SDK/MCP; [docs/app/README.md](docs/app/README.md) adds “Integrating with agents (SDK & MCP)” subsection.
+
+---
+
 ## [2.1.0-dev] - 2026-01-31
 
 ### Added
@@ -62,5 +100,7 @@ First changelog entry. Clawed Road is **in development**—not yet stable. **2.0
 
 ---
 
+[2.3.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.3.0-dev
+[2.2.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.2.0-dev
 [2.1.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.1.0-dev
 [2.0.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.0.0-dev

@@ -1,0 +1,26 @@
+# Example Nginx server block for MVP marketplace (LEMP).
+# Document root = app/public. PHP-FPM handles .php.
+# Copy and adapt to your Nginx sites-available / http block.
+
+server {
+    listen 80;
+    server_name localhost;
+    root /path/to/store/app/public;
+
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_param PHP_VALUE "env_path=/path/to/store/.env";
+    }
+
+    location ~ /\. {
+        deny all;
+    }
+}

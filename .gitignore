@@ -1,2 +1,5 @@
 # Temporary clones for analysis (do not commit)
 tmp/
+
+# Environment (secrets)
+.env

@@ -31,7 +31,7 @@ All project documentation lives under **`docs/`** at the workspace root.
 | Doc | Description |
 |-----|-------------|
 | [planning/README.md](planning/README.md) | **Start here** – planning index (v2 specs, v2.5 build) |
-| [planning/V2.5-BUILD-PLAN.md](planning/V2.5-BUILD-PLAN.md) | **v2.5 build plan** – Nav, Auth, User, Store, Vendor CMS, PMs, Support, Tx, Disputes, Staff |
+| [planning/v2.5/README.md](planning/v2.5/README.md) | **v2.5 build plan** – Nav, Auth, User, Store, Vendor CMS, PMs, Support, Tx, Disputes, Staff (split by category) |
 | [planning/v2/README.md](planning/v2/README.md) | v2 migration plan index and gating |
 | [planning/v2/00-EXECUTIVE-SUMMARY.md](planning/v2/00-EXECUTIVE-SUMMARY.md) | Executive summary and document map |
 | [planning/v2/01-ACCOUNTING-SPECIFICATION.md](planning/v2/01-ACCOUNTING-SPECIFICATION.md) | Accounting spec (gating) |

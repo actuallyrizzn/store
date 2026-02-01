@@ -27,6 +27,11 @@ function recordRecoveryAttempt(PDO $pdo, string $ipHash): void
 
 $ipHash = hash('sha256', $_SERVER['REMOTE_ADDR'] ?? '0');
 
+// Optional: expire old password reset tokens on step-1 load (no separate cron needed)
+if ($token === '') {
+    $pdo->prepare('DELETE FROM password_reset_tokens WHERE expires_at < ?')->execute([date('Y-m-d H:i:s')]);
+}
+
 if ($token !== '') {
     $stmt = $pdo->prepare('SELECT id, user_uuid, expires_at FROM password_reset_tokens WHERE token = ?');
     $stmt->execute([$token]);

@@ -41,6 +41,7 @@ final class Schema
         $this->createTransactionIntents();
         $this->createPasswordResetTokens();
         $this->createRecoveryRateLimit();
+        $this->createLoginRateLimit();
         $this->createInviteCodes();
         $this->createReviews();
         $this->createStoreWarnings();
@@ -494,6 +495,22 @@ final class Schema
         } else {
             $this->exec('CREATE INDEX IF NOT EXISTS idx_recovery_rate_limit_ip ON recovery_rate_limit(ip_hash)');
             $this->exec('CREATE INDEX IF NOT EXISTS idx_recovery_rate_limit_at ON recovery_rate_limit(requested_at)');
+        }
+    }
+
+    private function createLoginRateLimit(): void
+    {
+        $this->exec('CREATE TABLE IF NOT EXISTS login_rate_limit (
+            id ' . $this->pk() . ',
+            ip_hash TEXT NOT NULL,
+            attempted_at TEXT NOT NULL
+        )');
+        if (!$this->sqlite) {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_ip ON login_rate_limit(ip_hash)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_at ON login_rate_limit(attempted_at)');
+        } else {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_ip ON login_rate_limit(ip_hash)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_at ON login_rate_limit(attempted_at)');
         }
     }
 

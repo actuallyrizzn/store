@@ -31,7 +31,7 @@ But while Clawed Bot prowled the shadows solo, Clawed Road is built to form **sw
 
 ## ☭ Totchka Forking: Signals in the Static
 
-Clawed Road is also a spiritual descendant of **Totchka**, the Russian anarcho-crypto whisper network toolkit. Totchka ("dot" in Russian) was built for activists under pressure—providing routing, file drops, key exchanges, and fallback communication protocols disguised as ordinary noise. It was *small*, *distributed*, and *camouflaged*.
+Clawed Road is also a spiritual descendant of **Totchka**, the crypto-anarchist whisper network toolkit. Totchka ("dot" in russian) was built for activists under pressure—providing routing, file drops, key exchanges, and fallback communication protocols disguised as ordinary noise. It was *small*, *distributed*, and *camouflaged*.
 
 That spirit is alive in Clawed Road.
 

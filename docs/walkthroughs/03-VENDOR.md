@@ -126,16 +126,25 @@ Withdraw available balance to external wallet.
 
 Create a new item listing for the store.
 
-**URL:** `/item/new.php?store_uuid={store_uuid}` (or via API)
+**Note:** There is no web form for creating items in v2.5. Item creation is done via the API (`POST /api/items.php`).
 
-![Add Item](screenshots/vendor/07-item-new.png)
+![Item New Page Not Found](screenshots/vendor/07-item-new-redirect.png)
 
-**Note:** Item creation is typically done via API (`POST /api/items.php`).
+**API Endpoint:** `POST /api/items.php`
 
 **API Parameters:**
 - `name` - Item name (required)
 - `description` - Item description
 - `store_uuid` - Target store UUID (required)
+
+**Example API Call:**
+```bash
+curl -X POST http://localhost:8000/api/items.php \
+  -b "PHPSESSID=your_session" \
+  -F "name=My Product" \
+  -F "description=Product description" \
+  -F "store_uuid=your-store-uuid"
+```
 
 ---
 

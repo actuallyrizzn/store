@@ -2,10 +2,10 @@
 
 ![Clawed Road](clawed-road.svg)
 
-**Clawed Road** is a marketplace stack built for exit, not lock-in: EVM-only payments, plain PHP + Python cron on LEMP, and an API for agents—migrated from a Go darknet codebase with the surveillance surface stripped out.
+**Clawed Road** is a marketplace stack built for exit, not lock-in: EVM-only payments, plain PHP + Python cron on LEMP, and an API for agents—migrated from a Go darknet codebase with the dark-web UX and PGP/Tor surfaces stripped out
 
 > ⚠️ **Not a darknet market. Not an anonymity tool. Not "agent crime starter kit."**
-> Clawed Road ships without Tor/onion UX, PGP auth, end-to-end encrypted messaging, or stealth defaults. It's clearnet-first, ops-simple, and intentionally boring about privacy. If you're looking for a platform to launch an AI agent's criminal career, this isn't it.
+> Clawed Road ships without Tor/onion UX, PGP auth, end-to-end encrypted messaging, or stealth defaults. It's clearnet-first, ops-simple, and intentionally boring about privacy. If you're looking for a platform to launch an AI agent's criminal career, this isn't it. This is a clearnet marketplace stack with normal web assumptions (HTTPS, sessions, logs).”
 
 ---
 
@@ -13,7 +13,7 @@
 
 Darknet markets operate where there are no courts, no chargebacks, and no one to call. Trust is enforced by design: escrow, reputation, and crypto. As Cathy Reisenwitz wrote about Ross Ulbricht and Silk Road: *"He created the eBay of narcotics, and in doing so he replaced broken kneecaps with bad user reviews."* That's the vibe. DNMs are battle-tested in the most adversarial environment there is—and their logic works.
 
-I'm not writing this as a tourist. I spent real time in the Ross orbit, and later served as **Operations Director at FreeRossDAO**—helping keep the machine running and shipping the governance work that actually made the DAO function. That experience left me with a simple takeaway: the *architecture* that made DNMs resilient—deterministic accounting, escrow, disputes, reputation, clear roles—scales trust between adversarial participants better than most "legit" platforms ever manage.
+I'm not writing this as a tourist. I worked in Ross's orbit, and later served as **Operations Director at FreeRossDAO**—helping keep the machine running and shipping the governance work that actually made the DAO function. That experience left me with a simple takeaway: the *architecture* that made DNMs resilient—deterministic accounting, escrow, disputes, reputation, clear roles—scales trust between adversarial participants better than most "legit" platforms ever manage.
 
 Clawed Road takes that battle-tested marketplace logic—accounting, escrow, disputes, vendor tiers, the whole stack—clones the *mechanics*, and optimizes them for **agents** and **exit**. No lock-in. EVM-only payments, plain PHP + Python cron on LEMP, and an API for bots. We moved a legacy Go darknet codebase onto a stack that can fork again: documented accounting, Alchemy for chain access, and a road that doesn't end at one platform.
 

@@ -4,13 +4,18 @@
 
 **Clawed Road** is a marketplace stack built for exit, not lock-in: EVM-only payments, plain PHP + Python cron on LEMP, and an API for agents—migrated from a Go darknet codebase with the surveillance surface stripped out.
 
+> ⚠️ **Not a darknet market. Not an anonymity tool. Not "agent crime starter kit."**
+> Clawed Road ships without Tor/onion UX, PGP auth, end-to-end encrypted messaging, or stealth defaults. It's clearnet-first, ops-simple, and intentionally boring about privacy. If you're looking for a platform to launch an AI agent's criminal career, this isn't it.
+
 ---
 
 ## 🧭 Battle-Tested in a Truly Adversarial World
 
 Darknet markets operate where there are no courts, no chargebacks, and no one to call. Trust is enforced by design: escrow, reputation, and crypto. As Cathy Reisenwitz wrote about Ross Ulbricht and Silk Road: *"He created the eBay of narcotics, and in doing so he replaced broken kneecaps with bad user reviews."* That's the vibe. DNMs are battle-tested in the most adversarial environment there is—and their logic works.
 
-Clawed Road takes that battle-tested marketplace—accounting, escrow, disputes, vendor tiers, the whole stack—clones its logic, and optimizes it for **agents** and **exit**. No lock-in. EVM-only payments, plain PHP + Python cron on LEMP, and an API for bots. We moved a legacy Go darknet codebase onto a stack that can fork again: documented accounting, Alchemy for chain access, and a road that doesn't end at one platform.
+I'm not writing this as a tourist. I spent real time in the Ross orbit, and later served as **Operations Director at FreeRossDAO**—helping keep the machine running and shipping the governance work that actually made the DAO function. That experience left me with a simple takeaway: the *architecture* that made DNMs resilient—deterministic accounting, escrow, disputes, reputation, clear roles—scales trust between adversarial participants better than most "legit" platforms ever manage.
+
+Clawed Road takes that battle-tested marketplace logic—accounting, escrow, disputes, vendor tiers, the whole stack—clones the *mechanics*, and optimizes them for **agents** and **exit**. No lock-in. EVM-only payments, plain PHP + Python cron on LEMP, and an API for bots. We moved a legacy Go darknet codebase onto a stack that can fork again: documented accounting, Alchemy for chain access, and a road that doesn't end at one platform.
 
 ---
 
@@ -55,7 +60,7 @@ This repository is **Clawed Road**: a **migrated** marketplace stack. It started
 - **Replaced** the Go app with **plain PHP** on **LEMP** (Linux, Nginx, PHP). SQLite for MVP, MariaDB for prod.
 - **Replaced** Bitcoin and the external payment gate with **EVM-only** (Ethereum + admin-configurable ERC‑20 tokens) using **Alchemy** for chain access.
 - **Moved** all crypto work (HD escrow derivation, balance checks, sends) into **Python cron**—scheduled jobs that read/write the shared DB; no long-running daemon, no keys in PHP.
-- **Stripped** dark-web surface: no PGP, no Tor/onion UX, no encrypted messaging—username/password auth and a **per-user API key** (for agents) that inherits user role.
+- **Stripped** dark-web surface: no PGP, no Tor/onion UX, no encrypted messaging—username/password auth and a **per-user API key** (for agents) that inherits user role (admin, staff, or customer); vendor access is from store membership, not a role flag.
 - **Documented** accounting (escrow, commission, referral, dispute splits, invariants) in **docs/planning** so the next fork or re-implementation can reproduce the books.
 
 So: one foot out of the old stack, one foot on a road that can fork again. Clawed Road is a foundation. In the wild: agent networks, self-replicating marketplaces, and sovereign ops infrastructure are already forming.
@@ -95,7 +100,7 @@ Any agent that can connect to MCP (Sanctum/Letta, Claude Desktop, Cursor, or oth
 - **Web:** Plain PHP in `app/public/` (document root). Nginx → PHP-FPM. All app code under `app/public/includes/` (Env, Db, Schema, Config, User, Session, Router, ApiKey, StatusMachine, Views).
 - **DB:** SQLite (MVP) or MariaDB (prod), configured via `.env`. Schema and views in `Schema.php` / `Views.php`; run **schema.php** (HTTP or CLI) to create tables and seed config.
 - **Crypto:** Python in `app/cron/`. Cron runs on a schedule (e.g. every 1–5 min), then exits. Uses **Alchemy** for balance/tx; **eth-account** for HD-derived escrow addresses. Reads/writes same DB as PHP (intent/status); no internal HTTP between PHP and Python.
-- **Auth:** Username/password (bcrypt), PHP sessions. API keys with 60 req/min rate limit; key inherits user role (admin/vendor/customer).
+- **Auth:** Username/password (bcrypt), PHP sessions. API keys with 60 req/min rate limit; key inherits user role (admin, staff, or customer); vendor capabilities come from store membership.
 - **Payments:** EVM only. ETH + tokens defined in admin config. Escrow addresses derived from a single mnemonic (in .env, Python-only); buyer pays from external wallet.
 
 ### Vision / Roadmap

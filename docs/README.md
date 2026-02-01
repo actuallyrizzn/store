@@ -30,17 +30,19 @@ All project documentation lives under **`docs/`** at the workspace root.
 
 | Doc | Description |
 |-----|-------------|
-| [planning/README.md](planning/README.md) | **Start here** – migration plan index and gating |
-| [planning/00-EXECUTIVE-SUMMARY.md](planning/00-EXECUTIVE-SUMMARY.md) | Executive summary and document map |
-| [planning/01-ACCOUNTING-SPECIFICATION.md](planning/01-ACCOUNTING-SPECIFICATION.md) | Accounting spec (gating) |
-| [planning/02-DARK-WEB-STRIP-OUT.md](planning/02-DARK-WEB-STRIP-OUT.md) | Dark-web strip-out |
-| [planning/03-EVM-AND-PAYMENTS.md](planning/03-EVM-AND-PAYMENTS.md) | EVM and payments |
-| [planning/04-AUTH-AND-API-KEYS.md](planning/04-AUTH-AND-API-KEYS.md) | Auth and API keys |
-| [planning/05-ARCHITECTURE-LEMP-PYTHON.md](planning/05-ARCHITECTURE-LEMP-PYTHON.md) | LEMP + Python architecture |
-| [planning/06-API-AND-KEY-CREATION.md](planning/06-API-AND-KEY-CREATION.md) | API and key creation |
-| [planning/07-CODEBASE-INVENTORY.md](planning/07-CODEBASE-INVENTORY.md) | Codebase inventory |
-| [planning/08-PLANNING-DECISIONS-QA.md](planning/08-PLANNING-DECISIONS-QA.md) | Planning Q&A (binding) |
-| [planning/09-EXTERNAL-REPOS-ANALYSIS.md](planning/09-EXTERNAL-REPOS-ANALYSIS.md) | External repos analysis |
+| [planning/README.md](planning/README.md) | **Start here** – planning index (v2 specs, v2.5 build) |
+| [planning/V2.5-BUILD-PLAN.md](planning/V2.5-BUILD-PLAN.md) | **v2.5 build plan** – Nav, Auth, User, Store, Vendor CMS, PMs, Support, Tx, Disputes, Staff |
+| [planning/v2/README.md](planning/v2/README.md) | v2 migration plan index and gating |
+| [planning/v2/00-EXECUTIVE-SUMMARY.md](planning/v2/00-EXECUTIVE-SUMMARY.md) | Executive summary and document map |
+| [planning/v2/01-ACCOUNTING-SPECIFICATION.md](planning/v2/01-ACCOUNTING-SPECIFICATION.md) | Accounting spec (gating) |
+| [planning/v2/02-DARK-WEB-STRIP-OUT.md](planning/v2/02-DARK-WEB-STRIP-OUT.md) | Dark-web strip-out |
+| [planning/v2/03-EVM-AND-PAYMENTS.md](planning/v2/03-EVM-AND-PAYMENTS.md) | EVM and payments |
+| [planning/v2/04-AUTH-AND-API-KEYS.md](planning/v2/04-AUTH-AND-API-KEYS.md) | Auth and API keys |
+| [planning/v2/05-ARCHITECTURE-LEMP-PYTHON.md](planning/v2/05-ARCHITECTURE-LEMP-PYTHON.md) | LEMP + Python architecture |
+| [planning/v2/06-API-AND-KEY-CREATION.md](planning/v2/06-API-AND-KEY-CREATION.md) | API and key creation |
+| [planning/v2/07-CODEBASE-INVENTORY.md](planning/v2/07-CODEBASE-INVENTORY.md) | Codebase inventory |
+| [planning/v2/08-PLANNING-DECISIONS-QA.md](planning/v2/08-PLANNING-DECISIONS-QA.md) | Planning Q&A (binding) |
+| [planning/v2/09-EXTERNAL-REPOS-ANALYSIS.md](planning/v2/09-EXTERNAL-REPOS-ANALYSIS.md) | External repos analysis |
 
 ## Quick Links
 

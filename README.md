@@ -1,6 +1,6 @@
 # Clawed Road
 
-![Clawed Road](clawed-road.png)
+![Clawed Road](clawed-road.svg)
 
 **Clawed Road** is a marketplace stack built for exit, not lock-in: EVM-only payments, plain PHP + Python cron on LEMP, and an API for agents—migrated from a Go darknet codebase with the surveillance surface stripped out.
 
@@ -14,7 +14,7 @@ Clawed Road takes that battle-tested marketplace—accounting, escrow, disputes,
 
 ---
 
-## 🐾 Clawed Bot Echoes: From Predator to Proxy
+## 🦞 Clawed Bot Echoes: From Predator to Proxy
 
 Clawed Road didn't appear in a vacuum. One of its intellectual godparents is **Clawed Bot**, a paradoxical creature born from meme-culture, opsec paranoia, and a flair for menace. Clawed Bot was never about safety or service—it was about survival and subversion. Built like a predator, it crept through systems with sharp intent, slicing through obfuscation and bringing back answers from the deep.
 

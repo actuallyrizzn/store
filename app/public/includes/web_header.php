@@ -15,31 +15,53 @@ $currentUser = $currentUser ?? null;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($pageTitle) ?> — Clawed Road</title>
     <style>
+        :root {
+            --cr-header-bg: #1a0f12;
+            --cr-header-text: #f0e6e2;
+            --cr-header-link: #e8c4b8;
+            --cr-header-link-hover: #d4624a;
+            --cr-main-bg: #faf6f4;
+            --cr-main-text: #1a0f12;
+            --cr-link: #b85c38;
+            --cr-link-hover: #8b4520;
+            --cr-btn-bg: #b85c38;
+            --cr-btn-hover: #9a4a28;
+            --cr-border: #e8ddd8;
+            --cr-meta: #5c4a45;
+            --cr-alert-info-bg: #f5ebe8;
+            --cr-alert-info-text: #5c3d38;
+            --cr-alert-warning-bg: #fdf0e6;
+            --cr-alert-warning-text: #7a5c38;
+        }
         * { box-sizing: border-box; }
-        body { font-family: system-ui, sans-serif; margin: 0; padding: 0; line-height: 1.5; background: #f5f5f5; color: #111; }
-        .header { background: #1a1a1a; color: #eee; padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-        .header a { color: #b8d4fe; text-decoration: none; }
-        .header a:hover { text-decoration: underline; }
-        .header .brand { font-weight: 700; margin-right: 1rem; }
-        .main { max-width: 56rem; margin: 0 auto; padding: 1.5rem; background: #fff; min-height: 60vh; color: #111; }
+        body { font-family: system-ui, sans-serif; margin: 0; padding: 0; line-height: 1.5; background: var(--cr-main-bg); color: var(--cr-main-text); }
+        .header { background: var(--cr-header-bg); color: var(--cr-header-text); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+        .header a { color: var(--cr-header-link); text-decoration: none; }
+        .header a:hover { color: var(--cr-header-link-hover); text-decoration: underline; }
+        .header .brand { font-weight: 700; margin-right: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .header .brand img.logo { height: 1.75rem; width: auto; display: block; vertical-align: middle; }
+        .main { max-width: 56rem; margin: 0 auto; padding: 1.5rem; background: #fff; min-height: 60vh; color: var(--cr-main-text); border: 1px solid var(--cr-border); border-radius: 4px; box-shadow: 0 1px 3px rgba(26,15,18,0.06); }
         .list { list-style: none; padding: 0; margin: 0; }
-        .list li { padding: 0.75rem; border-bottom: 1px solid #eee; }
-        .list li a { color: #0066cc; text-decoration: none; }
-        .list li a:hover { text-decoration: underline; }
-        .meta { color: #666; font-size: 0.9rem; margin-top: 0.25rem; }
-        .btn { display: inline-block; padding: 0.5rem 1rem; background: #0066cc; color: #fff; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 1rem; }
-        .btn:hover { background: #0052a3; }
+        .list li { padding: 0.75rem; border-bottom: 1px solid var(--cr-border); }
+        .list li a { color: var(--cr-link); text-decoration: none; }
+        .list li a:hover { color: var(--cr-link-hover); text-decoration: underline; }
+        .meta { color: var(--cr-meta); font-size: 0.9rem; margin-top: 0.25rem; }
+        .btn { display: inline-block; padding: 0.5rem 1rem; background: var(--cr-btn-bg); color: #fff; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 1rem; }
+        .btn:hover { background: var(--cr-btn-hover); }
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.25rem; font-weight: 500; }
-        .form-group input { width: 100%; max-width: 20rem; padding: 0.5rem; }
+        .form-group input { width: 100%; max-width: 20rem; padding: 0.5rem; border: 1px solid var(--cr-border); border-radius: 4px; }
         .alert { padding: 0.75rem; margin-bottom: 1rem; border-radius: 4px; }
-        .alert-info { background: #e7f3ff; color: #004085; }
-        .alert-warning { background: #fff3cd; color: #856404; }
+        .alert-info { background: var(--cr-alert-info-bg); color: var(--cr-alert-info-text); }
+        .alert-warning { background: var(--cr-alert-warning-bg); color: var(--cr-alert-warning-text); }
     </style>
 </head>
 <body>
 <header class="header">
-    <a href="/marketplace.php" class="brand">Clawed Road</a>
+    <a href="/marketplace.php" class="brand">
+        <img src="/clawed-road.svg" alt="" class="logo" width="21" height="28">
+        <span>Clawed Road</span>
+    </a>
     <a href="/marketplace.php">Marketplace</a>
     <a href="/vendors.php">Vendors</a>
     <?php if ($currentUser): ?>

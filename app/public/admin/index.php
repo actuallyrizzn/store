@@ -38,14 +38,14 @@ require_once __DIR__ . '/../includes/web_header.php';
     <h2>Config</h2>
     <table style="border-collapse: collapse; width: 100%; max-width: 32rem;">
         <thead>
-            <tr style="border-bottom: 2px solid #ddd;">
+            <tr style="border-bottom: 2px solid var(--cr-border, #e8ddd8);">
                 <th style="text-align: left; padding: 0.5rem;">Key</th>
                 <th style="text-align: left; padding: 0.5rem;">Value</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($configValues as $key => $value): ?>
-            <tr style="border-bottom: 1px solid #eee;">
+            <tr style="border-bottom: 1px solid var(--cr-border, #e8ddd8);">
                 <td style="padding: 0.5rem;"><code><?= htmlspecialchars($key) ?></code></td>
                 <td style="padding: 0.5rem;"><?= htmlspecialchars($value ?? '') ?></td>
             </tr>
@@ -60,7 +60,7 @@ require_once __DIR__ . '/../includes/web_header.php';
     <?php else: ?>
     <table style="border-collapse: collapse; width: 100%; max-width: 40rem;">
         <thead>
-            <tr style="border-bottom: 2px solid #ddd;">
+            <tr style="border-bottom: 2px solid var(--cr-border, #e8ddd8);">
                 <th style="text-align: left; padding: 0.5rem;">ID</th>
                 <th style="text-align: left; padding: 0.5rem;">Chain</th>
                 <th style="text-align: left; padding: 0.5rem;">Symbol</th>
@@ -69,7 +69,7 @@ require_once __DIR__ . '/../includes/web_header.php';
         </thead>
         <tbody>
             <?php foreach ($tokens as $t): ?>
-            <tr style="border-bottom: 1px solid #eee;">
+            <tr style="border-bottom: 1px solid var(--cr-border, #e8ddd8);">
                 <td style="padding: 0.5rem;"><?= (int) $t['id'] ?></td>
                 <td style="padding: 0.5rem;"><?= htmlspecialchars((string) ($t['chain_id'] ?? '')) ?></td>
                 <td style="padding: 0.5rem;"><?= htmlspecialchars((string) ($t['symbol'] ?? '')) ?></td>

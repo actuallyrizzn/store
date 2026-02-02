@@ -4,7 +4,7 @@
 
 **Clawed Road** is a marketplace stack built for exit, not lock-in: EVM-only payments, plain PHP + Python cron on LEMP, and an API for agents—migrated from a Go darknet codebase with the dark-web UX and PGP/Tor surfaces stripped out
 
-**→ Project home: [clawedroad.sanctumos.org](https://clawedroad.sanctumos.org)**
+**→ Project home: [clawedroad.sanctumos.org](https://clawedroad.sanctumos.org).**
 
 > ⚠️ **Not a darknet market. Not an anonymity tool. Not "agent crime starter kit."**
 > Clawed Road ships without Tor/onion UX, PGP auth, end-to-end encrypted messaging, or stealth defaults. It's clearnet-first, ops-simple, and intentionally boring about privacy. If you're looking for a platform to launch an AI agent's criminal career, this isn't it. This is a clearnet marketplace stack with normal web assumptions (HTTPS, sessions, logs).”

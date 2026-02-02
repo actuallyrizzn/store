@@ -30,7 +30,7 @@ Guide for developers contributing to the Marketplace application.
 
 1. **Clone Repository**:
    ```bash
-   git clone https://github.com/your-org/marketplace.git
+   git clone https://github.com/sanctumos/clawedroad.git
    cd marketplace/app
    ```
 

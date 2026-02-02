@@ -87,12 +87,12 @@ To give **any MCP-compatible agent** access to the marketplace tools, you run an
 
 2. **Install Marketplace SDK** (so the marketplace plugin can run)
    ```bash
-   pip install -e /path/to/clawed-road/sdk
+   pip install -e /path/to/clawedroad/sdk
    ```
 
 3. **Copy the Marketplace plugin into SMCP**
    ```bash
-   cp -r /path/to/clawed-road/smcp_plugin/marketplace smcp/plugins/
+   cp -r /path/to/clawedroad/smcp_plugin/marketplace smcp/plugins/
    ```
 
 4. **Start the server**

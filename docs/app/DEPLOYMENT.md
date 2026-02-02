@@ -122,7 +122,7 @@ sudo su - marketplace
 
 # Clone repository
 cd /home/marketplace
-git clone https://github.com/your-org/marketplace.git
+git clone https://github.com/sanctumos/clawedroad.git
 cd marketplace/app
 ```
 

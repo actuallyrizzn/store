@@ -129,8 +129,8 @@ First changelog entry. Clawed Road is **in development**—not yet stable. **2.0
 
 ---
 
-[2.5.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.5.0-dev
-[2.3.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.3.0-dev
-[2.2.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.2.0-dev
-[2.1.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.1.0-dev
-[2.0.0-dev]: https://github.com/your-org/clawed-road/releases/tag/v2.0.0-dev
+[2.5.0-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.5.0-dev
+[2.3.0-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.3.0-dev
+[2.2.0-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.2.0-dev
+[2.1.0-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.1.0-dev
+[2.0.0-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.0.0-dev

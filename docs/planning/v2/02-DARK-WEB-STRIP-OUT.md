@@ -42,7 +42,7 @@ What to remove or replace so the product is a clearnet marketplace with no dark-
 
 ### 2.1 Import Paths
 
-- All Go imports use `qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/...`. This is an **onion URL as module path** (for Tor-based go get). For the **new** stack (PHP/Python) there are no Go imports; for any retained Go tooling, replace with a clearnet or local module path (e.g. `github.com/yourorg/store` or `store/...`).
+- All Go imports use `qxklmrhx7qkzais6.onion/Tochka/tochka-free-market/...`. This is an **onion URL as module path** (for Tor-based go get). For the **new** stack (PHP/Python) there are no Go imports; for any retained Go tooling, replace with a clearnet or local module path (e.g. `github.com/sanctumos/clawedroad` or `clawedroad/...`).
 
 ### 2.2 Copy and Config
 

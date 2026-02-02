@@ -64,4 +64,4 @@ See [INSTALL.md](INSTALL.md).
 ## Dependencies
 
 - Python 3.8+
-- [marketplace-sdk](https://github.com/...) (or `pip install -e ../../sdk` from this repo)
+- [marketplace-sdk](https://github.com/sanctumos/clawedroad) (or `pip install -e ../../sdk` from this repo)

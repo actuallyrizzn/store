@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.5.15-dev] - 2026-02-03
+
+### Documentation
+
+- **API_GUIDE.md** — Documented that GET /admin/config.php returns only a fixed set of keys, with note about other config keys in database. Fixes issue #30.
+
+---
+
 ## [2.5.14-dev] - 2026-02-03
 
 ### Documentation

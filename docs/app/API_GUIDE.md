@@ -685,7 +685,9 @@ All admin endpoints require admin role.
 
 #### GET /admin/config.php
 
-Get system configuration (requires admin session).
+Get system configuration (requires admin session). Returns only the fixed set of editable configuration keys listed below.
+
+**Note**: Other config keys exist in the database (e.g., `gold_account_referral_percent`, `silver_account_referral_percent`, `bronze_account_referral_percent`, `free_account_referral_percent`, `android_developer_username`, `android_developer_commission`) but are not exposed by this endpoint.
 
 **Response**:
 ```json

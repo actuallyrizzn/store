@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.5.12-dev] - 2026-02-03
+
+### Changed
+
+- **Views.php** — Simplified `dropViews()` by removing redundant if/else branches. Both SQLite and MariaDB support `DROP VIEW IF EXISTS`. Fixes issue #25.
+
+---
+
 ## [2.5.11-dev] - 2026-02-03
 
 ### Changed

@@ -1,0 +1,134 @@
+﻿PHPUnit 10.5.63 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.23
+Configuration: C:\projects\store\app\phpunit.xml
+
+................................................DDD..D....DD...  63 / 211 ( 29%)
+............................................................... 126 / 211 ( 59%)
+............................................................... 189 / 211 ( 89%)
+......................                                          211 / 211 (100%)
+
+Time: 00:32.376, Memory: 12.00 MB
+
+There was 1 PHPUnit test runner warning:
+
+1) No code coverage driver available
+
+--
+
+6 tests triggered 14 PHP deprecations:
+
+1) C:\projects\store\app\tests\Unit\DbTest.php:43
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* DbTest::testPdoThrowsWhenInitNotCalled
+  C:\projects\store\app\tests\Unit\DbTest.php:37
+
+2) C:\projects\store\app\tests\Unit\DbTest.php:51
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* DbTest::testPdoThrowsWhenInitNotCalled
+  C:\projects\store\app\tests\Unit\DbTest.php:37
+
+3) C:\projects\store\app\tests\Unit\DbTest.php:61
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* DbTest::testDriverThrowsWhenInitNotCalled
+  C:\projects\store\app\tests\Unit\DbTest.php:55
+
+4) C:\projects\store\app\tests\Unit\DbTest.php:69
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* DbTest::testDriverThrowsWhenInitNotCalled
+  C:\projects\store\app\tests\Unit\DbTest.php:55
+
+5) C:\projects\store\app\tests\Unit\DbTest.php:79
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* DbTest::testInitThrowsForUnsupportedDriver
+  C:\projects\store\app\tests\Unit\DbTest.php:73
+
+6) C:\projects\store\app\tests\Unit\DbTest.php:85
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* DbTest::testInitThrowsForUnsupportedDriver
+  C:\projects\store\app\tests\Unit\DbTest.php:73
+
+7) C:\projects\store\app\tests\Unit\DbTest.php:98
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* DbTest::testInitThrowsForUnsupportedDriver
+  C:\projects\store\app\tests\Unit\DbTest.php:73
+
+8) C:\projects\store\app\tests\Unit\DbTest.php:99
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* DbTest::testInitThrowsForUnsupportedDriver
+  C:\projects\store\app\tests\Unit\DbTest.php:73
+
+9) C:\projects\store\app\tests\Unit\EnvTest.php:44
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* EnvTest::testGetThrowsWhenLoadNotCalled
+  C:\projects\store\app\tests\Unit\EnvTest.php:37
+
+10) C:\projects\store\app\tests\Unit\EnvTest.php:52
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* EnvTest::testGetThrowsWhenLoadNotCalled
+  C:\projects\store\app\tests\Unit\EnvTest.php:37
+
+11) C:\projects\store\app\tests\Unit\EnvTest.php:113
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* EnvTest::testLoadWithMissingEnvFileResultsInEmptyVars
+  C:\projects\store\app\tests\Unit\EnvTest.php:108
+
+12) C:\projects\store\app\tests\Unit\EnvTest.php:121
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* EnvTest::testLoadWithMissingEnvFileResultsInEmptyVars
+  C:\projects\store\app\tests\Unit\EnvTest.php:108
+
+13) C:\projects\store\app\tests\Unit\EnvTest.php:78
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* EnvTest::testGetRequiredThrowsWhenValueEmpty
+  C:\projects\store\app\tests\Unit\EnvTest.php:69
+
+14) C:\projects\store\app\tests\Unit\EnvTest.php:86
+Calling ReflectionProperty::setValue() with a single argument is deprecated
+
+Triggered by:
+
+* EnvTest::testGetRequiredThrowsWhenValueEmpty
+  C:\projects\store\app\tests\Unit\EnvTest.php:69
+
+OK, but there were issues!
+Tests: 211, Assertions: 444, PHPUnit Warnings: 1, Deprecations: 14.

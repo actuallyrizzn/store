@@ -41,7 +41,7 @@ final class EnvTest extends TestCase
         $prop = $ref->getProperty('vars');
         $prop->setAccessible(true);
         $saved = $prop->getValue();
-        $prop->setValue(null);
+        $prop->setValue(null, null);
 
         try {
             Env::get('DB_DRIVER');
@@ -49,7 +49,7 @@ final class EnvTest extends TestCase
         } catch (RuntimeException $e) {
             $this->assertStringContainsString('Env::load() must be called first', $e->getMessage());
         } finally {
-            $prop->setValue($saved);
+            $prop->setValue(null, $saved);
         }
     }
 
@@ -75,7 +75,7 @@ final class EnvTest extends TestCase
         $ref = new ReflectionClass(Env::class);
         $prop = $ref->getProperty('vars');
         $prop->setAccessible(true);
-        $prop->setValue(null);
+        $prop->setValue(null, null);
         Env::load($tmpDir);
         try {
             Env::getRequired('EMPTY_KEY');
@@ -83,7 +83,7 @@ final class EnvTest extends TestCase
         } catch (RuntimeException $e) {
             $this->assertStringContainsString('Missing required env: EMPTY_KEY', $e->getMessage());
         }
-        $prop->setValue(null);
+        $prop->setValue(null, null);
         Env::load(TEST_BASE_DIR); // restore for other tests
         // Cleanup
         @unlink($tmpDir . '/.env');
@@ -110,7 +110,7 @@ final class EnvTest extends TestCase
         $ref = new ReflectionClass(Env::class);
         $prop = $ref->getProperty('vars');
         $prop->setAccessible(true);
-        $prop->setValue(null);
+        $prop->setValue(null, null);
         $emptyDir = sys_get_temp_dir() . '/env_empty_' . getmypid();
         if (!is_dir($emptyDir)) {
             mkdir($emptyDir, 0755, true);
@@ -118,7 +118,7 @@ final class EnvTest extends TestCase
         $this->assertFileDoesNotExist($emptyDir . DIRECTORY_SEPARATOR . '.env');
         Env::load($emptyDir);
         $this->assertNull(Env::get('DB_DRIVER'));
-        $prop->setValue(null);
+        $prop->setValue(null, null);
         Env::load(TEST_BASE_DIR);
     }
 }

@@ -1,0 +1,18 @@
+﻿PHPUnit 10.5.63 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.23
+Configuration: C:\projects\store\app\phpunit.xml
+
+...............................................................  63 / 211 ( 29%)
+............................................................... 126 / 211 ( 59%)
+............................................................... 189 / 211 ( 89%)
+......................                                          211 / 211 (100%)
+
+Time: 00:33.964, Memory: 12.00 MB
+
+There was 1 PHPUnit test runner warning:
+
+1) No code coverage driver available
+
+OK, but there were issues!
+Tests: 211, Assertions: 444, PHPUnit Warnings: 1.

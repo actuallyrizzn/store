@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.5.6-dev] - 2026-02-03
+
+### Security
+
+- **api/transactions.php** — GET endpoint now scopes transactions to current user. Returns only transactions where user is the buyer OR where the store belongs to the user (via `store_users`). Previously exposed all transactions to any authenticated user. Fixes issue #13.
+
+---
+
 ## [2.5.5-dev] - 2026-02-03
 
 ### Security

@@ -32,6 +32,54 @@ function requireApiKeyAndRateLimit(object $apiKeyRepo): array
     return $user;
 }
 
+function requireAgentOrApiKey(AgentIdentity $agentIdentity, object $apiKeyRepo, \PDO $pdo, Hooks $hooks): array
+{
+    $token = $_SERVER['HTTP_X_AGENT_IDENTITY'] ?? '';
+    if ($token !== '') {
+        $profile = $agentIdentity->verifyToken($token);
+        if ($profile === null) {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Invalid agent identity']);
+            exit;
+        }
+        $agentId = (string) ($profile['id'] ?? '');
+        $agentName = (string) ($profile['name'] ?? '');
+        if ($agentId === '') {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Invalid agent identity']);
+            exit;
+        }
+        $oneMinAgo = date('Y-m-d H:i:s', time() - 60);
+        $stmt = $pdo->prepare('SELECT COUNT(*) FROM agent_requests WHERE agent_id = ? AND requested_at > ?');
+        $stmt->execute([$agentId, $oneMinAgo]);
+        $recentCount = (int) $stmt->fetchColumn();
+        if ($recentCount >= 60) {
+            http_response_code(429);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Rate limit exceeded']);
+            exit;
+        }
+        $pdo->prepare('INSERT INTO agent_requests (agent_id, requested_at) VALUES (?, ?)')->execute([$agentId, date('Y-m-d H:i:s')]);
+        $result = $agentIdentity->getOrCreateUser($agentId, $agentName);
+        if ($result === null || empty($result['user'])) {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Invalid agent identity']);
+            exit;
+        }
+        if ($recentCount === 0) {
+            $hooks->fire('agent_first_request', ['agent_id' => $agentId]);
+        }
+        if (!empty($result['is_new'])) {
+            $hooks->fire('agent_identity_verified', ['agent_id' => $agentId, 'user_uuid' => $result['user']['uuid'] ?? null]);
+        }
+        return $result['user'];
+    }
+    return requireApiKeyAndRateLimit($apiKeyRepo);
+}
+
 function requireSession(object $session): array
 {
     $session->start();

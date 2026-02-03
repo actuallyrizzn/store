@@ -24,6 +24,9 @@ final class Env
         'CSRF_SALT',
         'ADMIN_USERNAME',
         'ADMIN_PASSWORD',
+        'ACCOUNT_CREATION_MIN_INTERVAL_MINUTES',
+        'AGENT_IDENTITY_APP_KEY',
+        'AGENT_IDENTITY_VERIFY_URL',
     ];
 
     public static function load(string $baseDir): void

@@ -42,6 +42,7 @@ final class Schema
         $this->createPasswordResetTokens();
         $this->createRecoveryRateLimit();
         $this->createLoginRateLimit();
+        $this->createRegistrationRateLimit();
         $this->createInviteCodes();
         $this->createReviews();
         $this->createStoreWarnings();
@@ -54,6 +55,10 @@ final class Schema
         $this->createConfig();
         $this->createApiKeys();
         $this->createApiKeyRequests();
+        $this->createAgentIdentities();
+        $this->createAgentRequests();
+        $this->createHooks();
+        $this->createHookEvents();
         $this->createAcceptedTokens();
     }
 
@@ -511,6 +516,98 @@ final class Schema
         } else {
             $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_ip ON login_rate_limit(ip_hash)');
             $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_at ON login_rate_limit(attempted_at)');
+        }
+    }
+
+    private function createRegistrationRateLimit(): void
+    {
+        $this->exec('CREATE TABLE IF NOT EXISTS registration_rate_limit (
+            id ' . $this->pk() . ',
+            ip_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )');
+        if (!$this->sqlite) {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_ip ON registration_rate_limit(ip_hash)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_at ON registration_rate_limit(created_at)');
+        } else {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_ip ON registration_rate_limit(ip_hash)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_at ON registration_rate_limit(created_at)');
+        }
+    }
+
+    private function createAgentIdentities(): void
+    {
+        $pk = $this->pk();
+        $this->exec("CREATE TABLE IF NOT EXISTS agent_identities (
+            id {$pk},
+            agent_id TEXT NOT NULL,
+            agent_name TEXT,
+            provider TEXT NOT NULL,
+            user_uuid TEXT NOT NULL,
+            first_verified_at TEXT NOT NULL,
+            last_verified_at TEXT NOT NULL,
+            FOREIGN KEY (user_uuid) REFERENCES users(uuid)
+        )");
+        if (!$this->sqlite) {
+            $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_agent_identities_agent_id ON agent_identities(agent_id)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_identities_user ON agent_identities(user_uuid)');
+        } else {
+            $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_agent_identities_agent_id ON agent_identities(agent_id)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_identities_user ON agent_identities(user_uuid)');
+        }
+    }
+
+    private function createAgentRequests(): void
+    {
+        $pk = $this->pk();
+        $this->exec("CREATE TABLE IF NOT EXISTS agent_requests (
+            id {$pk},
+            agent_id TEXT NOT NULL,
+            requested_at TEXT NOT NULL
+        )");
+        if (!$this->sqlite) {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_agent ON agent_requests(agent_id)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_at ON agent_requests(requested_at)');
+        } else {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_agent ON agent_requests(agent_id)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_at ON agent_requests(requested_at)');
+        }
+    }
+
+    private function createHooks(): void
+    {
+        $pk = $this->pk();
+        $this->exec("CREATE TABLE IF NOT EXISTS hooks (
+            id {$pk},
+            event_name TEXT NOT NULL,
+            webhook_url TEXT,
+            enabled INTEGER NOT NULL DEFAULT 0,
+            created_at TEXT NOT NULL
+        )");
+        if (!$this->sqlite) {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_hooks_event ON hooks(event_name)');
+        } else {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_hooks_event ON hooks(event_name)');
+        }
+    }
+
+    private function createHookEvents(): void
+    {
+        $pk = $this->pk();
+        $this->exec("CREATE TABLE IF NOT EXISTS hook_events (
+            id {$pk},
+            hook_id INTEGER,
+            event_name TEXT NOT NULL,
+            payload TEXT,
+            fired_at TEXT NOT NULL,
+            FOREIGN KEY (hook_id) REFERENCES hooks(id)
+        )");
+        if (!$this->sqlite) {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_event ON hook_events(event_name)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_hook ON hook_events(hook_id)');
+        } else {
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_event ON hook_events(event_name)');
+            $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_hook ON hook_events(hook_id)');
         }
     }
 

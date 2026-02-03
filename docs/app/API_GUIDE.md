@@ -107,6 +107,20 @@ curl -H "X-API-Key: YOUR_API_KEY" \
 curl "http://localhost/api/transactions.php?token=YOUR_API_KEY"
 ```
 
+### Agent Identity Authentication
+
+Used for agent-first access. Agents send an identity token in a header; the backend verifies the token and maps it to a local user.
+
+**Header**:
+```bash
+curl -H "X-Agent-Identity: YOUR_IDENTITY_TOKEN" \
+  http://localhost/api/auth-user.php
+```
+
+**Notes**:
+- The identity token is issued by your configured identity provider.
+- On first successful verify, Clawed Road creates a linked user; subsequent requests use the existing user.
+
 ---
 
 ## Rate Limiting
@@ -114,6 +128,7 @@ curl "http://localhost/api/transactions.php?token=YOUR_API_KEY"
 ### Limits
 
 - **60 requests per minute** per API key
+- **60 requests per minute** per agent identity token
 - Sliding window (last 60 seconds)
 
 ### Rate Limit Response

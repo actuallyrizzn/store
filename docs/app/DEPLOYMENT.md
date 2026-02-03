@@ -163,6 +163,9 @@ ALCHEMY_NETWORK=mainnet
 COMMISSION_WALLET_MAINNET=0xYourMainnetWallet
 COMMISSION_WALLET_SEPOLIA=0xYourSepoliaWallet
 COMMISSION_WALLET_BASE=0xYourBaseWallet
+
+# Rate limit: minimum minutes between account creations per IP (default 10; set to 0 to disable)
+# ACCOUNT_CREATION_MIN_INTERVAL_MINUTES=10
 ```
 
 **Generate Strong Salts**:

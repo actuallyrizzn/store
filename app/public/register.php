@@ -19,6 +19,26 @@ if ($inviteCode !== '') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $intervalMinutes = (int) (Env::get('ACCOUNT_CREATION_MIN_INTERVAL_MINUTES') ?? '10');
+    $rateLimitEnabled = $intervalMinutes >= 1;
+    $ipHash = hash('sha256', $_SERVER['REMOTE_ADDR'] ?? '0');
+    if ($rateLimitEnabled) {
+        $cutoff = date('Y-m-d H:i:s', time() - $intervalMinutes * 60);
+        $stmt = $pdo->prepare('SELECT 1 FROM registration_rate_limit WHERE ip_hash = ? AND created_at > ? LIMIT 1');
+        $stmt->execute([$ipHash, $cutoff]);
+        if ($stmt->fetch() !== false) {
+            $pageTitle = 'Register';
+            $error = sprintf(
+                'You can only create one account per %d minutes from this network. Try again later.',
+                $intervalMinutes
+            );
+            require_once __DIR__ . '/includes/web_header.php';
+            echo '<p class="alert alert-warning">' . htmlspecialchars($error) . '</p>';
+            include __DIR__ . '/includes/form_register.php';
+            require_once __DIR__ . '/includes/web_footer.php';
+            return;
+        }
+    }
     if (!$session->validateCsrfToken((string) ($_POST['csrf_token'] ?? ''))) {
         $pageTitle = 'Register';
         $error = 'Invalid request. Please try again.';
@@ -91,6 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$uuid, date('Y-m-d H:i:s'), $postInvite]);
     }
     if ($user !== null) {
+        if ($rateLimitEnabled) {
+            $pdo->prepare('INSERT INTO registration_rate_limit (ip_hash, created_at) VALUES (?, ?)')->execute([$ipHash, date('Y-m-d H:i:s')]);
+            $pruneCutoff = date('Y-m-d H:i:s', time() - $intervalMinutes * 60 * 2);
+            $pdo->prepare('DELETE FROM registration_rate_limit WHERE created_at < ?')->execute([$pruneCutoff]);
+        }
         $session->start();
         $session->setUser($user);
     }

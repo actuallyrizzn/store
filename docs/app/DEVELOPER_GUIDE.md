@@ -664,6 +664,23 @@ $user = requireApiKeyAndRateLimit($apiKeyRepo);
 // $user is guaranteed to exist here
 ```
 
+**Agent identity-based**:
+```php
+$user = requireAgentOrApiKey($agentIdentity, $apiKeyRepo, $pdo);
+// $user is guaranteed to exist here
+```
+
+### Agent Skill
+
+- The agent skill is served at `/api/skill.php` as markdown.
+- It is generated from `app/skill_template.md` using `SITE_URL` and should be linked from the marketplace front page.
+
+### Hooks
+
+- Hook events are defined in the `hooks` table and logged in `hook_events`.
+- Current events: `agent_identity_verified`, `agent_first_request`, `transaction_created_by_agent`.
+- If `hooks.webhook_url` is set and `enabled=1`, Clawed Road POSTs the event payload as JSON.
+
 **Optional authentication**:
 ```php
 $key = getApiKeyFromRequest();

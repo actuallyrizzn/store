@@ -14,6 +14,8 @@ require $inc . 'Db.php';
 require $inc . 'Session.php';
 require $inc . 'User.php';
 require $inc . 'ApiKey.php';
+require $inc . 'AgentIdentity.php';
+require $inc . 'Hooks.php';
 
 Env::load($baseDir);
 Db::init($baseDir);
@@ -22,6 +24,8 @@ $pdo = Db::pdo();
 $session = new Session($baseDir);
 $userRepo = new User($pdo);
 $apiKeyRepo = new ApiKey($pdo);
+$agentIdentity = new AgentIdentity($pdo, $userRepo);
+$hooks = new Hooks($pdo);
 
 function getApiKeyFromRequest(): ?string
 {

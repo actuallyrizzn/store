@@ -12,29 +12,7 @@ require_once __DIR__ . '/../includes/api_helpers.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $key = getApiKeyFromRequest();
-    if ($key !== null) {
-        $user = $apiKeyRepo->validate($key);
-        if ($user === null) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Invalid API key']);
-            exit;
-        }
-        if (!$apiKeyRepo->checkRateLimit((int) $user['api_key_id'])) {
-            http_response_code(429);
-            echo json_encode(['error' => 'Rate limit exceeded']);
-            exit;
-        }
-        $apiKeyRepo->recordRequest((int) $user['api_key_id']);
-    } else {
-        $session->start();
-        $user = $session->getUser();
-        if ($user === null) {
-            http_response_code(401);
-            echo json_encode(['error' => 'API key or login required']);
-            exit;
-        }
-    }
+    $user = requireAgentOrApiKey($agentIdentity, $apiKeyRepo, $pdo, $hooks);
     $stmt = $pdo->query('SELECT * FROM v_current_cumulative_transaction_statuses LIMIT 100');
     echo json_encode(['transactions' => $stmt->fetchAll(\PDO::FETCH_ASSOC)]);
     exit;
@@ -64,6 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $now = date('Y-m-d H:i:s');
     $pdo->prepare('INSERT INTO transactions (uuid, type, description, package_uuid, store_uuid, buyer_uuid, refund_address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')->execute([$txUuid, 'evm', '', $packageUuid, $storeRow['store_uuid'], $user['uuid'], $refundAddress ?: null, $now]);
     $pdo->prepare('INSERT INTO evm_transactions (uuid, amount, chain_id, currency, created_at) VALUES (?, ?, ?, ?, ?)')->execute([$txUuid, $requiredAmount, $chainId, $currency, $now]);
+    $agentStmt = $pdo->prepare('SELECT agent_id FROM agent_identities WHERE user_uuid = ? LIMIT 1');
+    $agentStmt->execute([$user['uuid']]);
+    $agentRow = $agentStmt->fetch(\PDO::FETCH_ASSOC);
+    if ($agentRow && !empty($agentRow['agent_id'])) {
+        $hooks->fire('transaction_created_by_agent', ['transaction_uuid' => $txUuid, 'agent_id' => $agentRow['agent_id']]);
+    }
     echo json_encode(['ok' => true, 'uuid' => $txUuid, 'escrow_address_pending' => true]);
     exit;
 }

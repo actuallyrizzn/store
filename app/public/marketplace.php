@@ -15,6 +15,7 @@ require_once __DIR__ . '/includes/web_header.php';
 ?>
 <h1>Marketplace</h1>
 <p>Browse items from all stores.</p>
+<p><a href="/api/skill.php">Agent skill (for AI agents)</a></p>
 <ul class="list">
     <?php foreach ($items as $row): ?>
         <li>

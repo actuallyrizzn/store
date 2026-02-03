@@ -16,5 +16,5 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-$user = requireApiKeyAndRateLimit($apiKeyRepo);
+$user = requireAgentOrApiKey($agentIdentity, $apiKeyRepo, $pdo, $hooks);
 echo json_encode(['username' => $user['username'], 'role' => $user['role'], 'user_uuid' => $user['user_uuid']]);

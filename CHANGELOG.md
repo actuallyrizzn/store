@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
-## [2.5.0-dev] - 2026-01-31
+## [2.5.1-dev] - 2026-01-31
 
 ### Added
 
@@ -129,6 +129,7 @@ First changelog entry. Clawed Road is **in development**—not yet stable. **2.0
 
 ---
 
+[2.5.1-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.5.1-dev
 [2.5.0-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.5.0-dev
 [2.3.0-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.3.0-dev
 [2.2.0-dev]: https://github.com/sanctumos/clawedroad/releases/tag/v2.2.0-dev

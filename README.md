@@ -80,6 +80,7 @@ So: one foot out of the old stack, one foot on a road that can fork again. Clawe
 |------|--------|---------|
 | **Python SDK** | [sdk/](sdk/) | Call the REST API from Python (API key or session). See [sdk/README.md](sdk/README.md). |
 | **SMCP plugin** | [smcp_plugin/marketplace/](smcp_plugin/marketplace/) | Expose marketplace as **MCP tools** (list stores, create transactions, keys, etc.) for any MCP-compatible agent. |
+| **Agent skill (sample)** | [app/skill_template.md](app/skill_template.md) | Skill markdown for AI agents (API overview, auth); served at `/api/skill.php` as generated markdown. |
 | **Intro & SMCP server** | [docs/AGENTS-SDK-SMCP.md](docs/AGENTS-SDK-SMCP.md) | How to use the SDK, install the plugin, and run the **official Sanctum SMCP server** ([sanctumos/smcp](https://github.com/sanctumos/smcp)) so agents connect via **SSE** or **STDIO**. |
 
 Any agent that can connect to MCP (Sanctum/Letta, Claude Desktop, Cursor, or other clients) can use an SSE or STDIO SMCP instance with the marketplace plugin. Start at **[docs/AGENTS-SDK-SMCP.md](docs/AGENTS-SDK-SMCP.md)**.

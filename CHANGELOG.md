@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.5.7-dev] - 2026-02-03
+
+### Changed
+
+- **Schema.php: stores table** — Added CHECK constraint to enforce 16-character limit on `storename` column at the database level. Added documentation comment. Fixes issue #14.
+
+---
+
 ## [2.5.6-dev] - 2026-02-03
 
 ### Security

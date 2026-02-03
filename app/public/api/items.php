@@ -28,12 +28,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = requireSession($session);
+    if (!$session->validateCsrfToken((string) ($_POST['csrf_token'] ?? ''))) {
+        http_response_code(403);
+        echo json_encode(['error' => 'CSRF token required']);
+        exit;
+    }
     $name = trim((string) ($_POST['name'] ?? ''));
     $description = trim((string) ($_POST['description'] ?? ''));
     $storeUuid = trim((string) ($_POST['store_uuid'] ?? ''));
     if ($name === '' || $storeUuid === '') {
         http_response_code(400);
         echo json_encode(['error' => 'name and store_uuid required']);
+        exit;
+    }
+    // Authorization: verify user is a member of the store
+    $memberCheck = $pdo->prepare('SELECT 1 FROM store_users WHERE store_uuid = ? AND user_uuid = ?');
+    $memberCheck->execute([$storeUuid, $user['uuid']]);
+    if ($memberCheck->fetch() === false) {
+        http_response_code(403);
+        echo json_encode(['error' => 'Not a member of this store']);
         exit;
     }
     $uuid = User::generateUuid();

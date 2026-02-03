@@ -478,13 +478,9 @@ final class Schema
             created_at TEXT NOT NULL,
             FOREIGN KEY (user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user ON password_reset_tokens(user_uuid)');
-        } else {
-            $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user ON password_reset_tokens(user_uuid)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user ON password_reset_tokens(user_uuid)');
     }
 
     private function createRecoveryRateLimit(): void
@@ -494,13 +490,9 @@ final class Schema
             ip_hash TEXT NOT NULL,
             requested_at TEXT NOT NULL
         )');
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_recovery_rate_limit_ip ON recovery_rate_limit(ip_hash)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_recovery_rate_limit_at ON recovery_rate_limit(requested_at)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_recovery_rate_limit_ip ON recovery_rate_limit(ip_hash)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_recovery_rate_limit_at ON recovery_rate_limit(requested_at)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_recovery_rate_limit_ip ON recovery_rate_limit(ip_hash)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_recovery_rate_limit_at ON recovery_rate_limit(requested_at)');
     }
 
     private function createLoginRateLimit(): void
@@ -510,13 +502,9 @@ final class Schema
             ip_hash TEXT NOT NULL,
             attempted_at TEXT NOT NULL
         )');
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_ip ON login_rate_limit(ip_hash)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_at ON login_rate_limit(attempted_at)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_ip ON login_rate_limit(ip_hash)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_at ON login_rate_limit(attempted_at)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_ip ON login_rate_limit(ip_hash)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_login_rate_limit_at ON login_rate_limit(attempted_at)');
     }
 
     private function createRegistrationRateLimit(): void
@@ -526,13 +514,9 @@ final class Schema
             ip_hash TEXT NOT NULL,
             created_at TEXT NOT NULL
         )');
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_ip ON registration_rate_limit(ip_hash)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_at ON registration_rate_limit(created_at)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_ip ON registration_rate_limit(ip_hash)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_at ON registration_rate_limit(created_at)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_ip ON registration_rate_limit(ip_hash)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_registration_rate_limit_at ON registration_rate_limit(created_at)');
     }
 
     private function createAgentIdentities(): void
@@ -548,13 +532,9 @@ final class Schema
             last_verified_at TEXT NOT NULL,
             FOREIGN KEY (user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_agent_identities_agent_id ON agent_identities(agent_id)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_identities_user ON agent_identities(user_uuid)');
-        } else {
-            $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_agent_identities_agent_id ON agent_identities(agent_id)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_identities_user ON agent_identities(user_uuid)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_agent_identities_agent_id ON agent_identities(agent_id)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_identities_user ON agent_identities(user_uuid)');
     }
 
     private function createAgentRequests(): void
@@ -565,13 +545,9 @@ final class Schema
             agent_id TEXT NOT NULL,
             requested_at TEXT NOT NULL
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_agent ON agent_requests(agent_id)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_at ON agent_requests(requested_at)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_agent ON agent_requests(agent_id)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_at ON agent_requests(requested_at)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_agent ON agent_requests(agent_id)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_agent_requests_at ON agent_requests(requested_at)');
     }
 
     private function createHooks(): void
@@ -584,11 +560,8 @@ final class Schema
             enabled INTEGER NOT NULL DEFAULT 0,
             created_at TEXT NOT NULL
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_hooks_event ON hooks(event_name)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_hooks_event ON hooks(event_name)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_hooks_event ON hooks(event_name)');
     }
 
     private function createHookEvents(): void
@@ -602,13 +575,9 @@ final class Schema
             fired_at TEXT NOT NULL,
             FOREIGN KEY (hook_id) REFERENCES hooks(id)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_event ON hook_events(event_name)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_hook ON hook_events(hook_id)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_event ON hook_events(event_name)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_hook ON hook_events(hook_id)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_event ON hook_events(event_name)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_hook_events_hook ON hook_events(hook_id)');
     }
 
     private function createInviteCodes(): void
@@ -624,20 +593,17 @@ final class Schema
             FOREIGN KEY (created_by_user_uuid) REFERENCES users(uuid),
             FOREIGN KEY (used_by_user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_invite_codes_code ON invite_codes(code)');
-        } else {
-            $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_invite_codes_code ON invite_codes(code)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_invite_codes_code ON invite_codes(code)');
     }
 
     private function createReviews(): void
     {
         $pk = $this->pk();
-        $unique = $this->sqlite ? 'UNIQUE' : 'UNIQUE';
+        // UNIQUE constraint is portable between SQLite and MariaDB
         $this->exec("CREATE TABLE IF NOT EXISTS reviews (
             id {$pk},
-            transaction_uuid TEXT NOT NULL {$unique},
+            transaction_uuid TEXT NOT NULL UNIQUE,
             store_uuid TEXT NOT NULL,
             rater_user_uuid TEXT NOT NULL,
             score INTEGER NOT NULL,
@@ -647,11 +613,8 @@ final class Schema
             FOREIGN KEY (store_uuid) REFERENCES stores(uuid),
             FOREIGN KEY (rater_user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_reviews_store ON reviews(store_uuid)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_reviews_store ON reviews(store_uuid)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_reviews_store ON reviews(store_uuid)');
     }
 
     private function createStoreWarnings(): void
@@ -670,11 +633,8 @@ final class Schema
             FOREIGN KEY (store_uuid) REFERENCES stores(uuid),
             FOREIGN KEY (author_user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_store_warnings_store ON store_warnings(store_uuid)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_store_warnings_store ON store_warnings(store_uuid)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_store_warnings_store ON store_warnings(store_uuid)');
     }
 
     private function createSupportTickets(): void
@@ -689,11 +649,8 @@ final class Schema
             updated_at TEXT,
             FOREIGN KEY (user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_support_tickets_user ON support_tickets(user_uuid)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_support_tickets_user ON support_tickets(user_uuid)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_support_tickets_user ON support_tickets(user_uuid)');
     }
 
     private function createSupportTicketMessages(): void
@@ -708,11 +665,8 @@ final class Schema
             FOREIGN KEY (ticket_id) REFERENCES support_tickets(id),
             FOREIGN KEY (user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_support_ticket_messages_ticket ON support_ticket_messages(ticket_id, created_at)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_support_ticket_messages_ticket ON support_ticket_messages(ticket_id, created_at)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_support_ticket_messages_ticket ON support_ticket_messages(ticket_id, created_at)');
     }
 
     private function createPrivateMessages(): void
@@ -728,13 +682,9 @@ final class Schema
             FOREIGN KEY (from_user_uuid) REFERENCES users(uuid),
             FOREIGN KEY (to_user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_private_messages_from ON private_messages(from_user_uuid, created_at)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_private_messages_to ON private_messages(to_user_uuid, created_at)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_private_messages_from ON private_messages(from_user_uuid, created_at)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_private_messages_to ON private_messages(to_user_uuid, created_at)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_private_messages_from ON private_messages(from_user_uuid, created_at)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_private_messages_to ON private_messages(to_user_uuid, created_at)');
     }
 
     private function createDepositWithdrawIntents(): void
@@ -751,13 +701,9 @@ final class Schema
             FOREIGN KEY (deposit_uuid) REFERENCES deposits(uuid),
             FOREIGN KEY (requested_by_user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_deposit_withdraw_intents_deposit ON deposit_withdraw_intents(deposit_uuid)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_deposit_withdraw_intents_status ON deposit_withdraw_intents(status)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_deposit_withdraw_intents_deposit ON deposit_withdraw_intents(deposit_uuid)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_deposit_withdraw_intents_status ON deposit_withdraw_intents(status)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_deposit_withdraw_intents_deposit ON deposit_withdraw_intents(deposit_uuid)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_deposit_withdraw_intents_status ON deposit_withdraw_intents(status)');
     }
 
     private function createAuditLog(): void
@@ -773,13 +719,9 @@ final class Schema
             created_at TEXT NOT NULL,
             FOREIGN KEY (actor_user_uuid) REFERENCES users(uuid)
         )");
-        if (!$this->sqlite) {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_audit_log_actor ON audit_log(actor_user_uuid)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_audit_log_target ON audit_log(target_type, target_id)');
-        } else {
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_audit_log_actor ON audit_log(actor_user_uuid)');
-            $this->exec('CREATE INDEX IF NOT EXISTS idx_audit_log_target ON audit_log(target_type, target_id)');
-        }
+        // Index DDL is portable between SQLite and MariaDB
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_audit_log_actor ON audit_log(actor_user_uuid)');
+        $this->exec('CREATE INDEX IF NOT EXISTS idx_audit_log_target ON audit_log(target_type, target_id)');
     }
 
     private function addV25Columns(): void

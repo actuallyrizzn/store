@@ -450,6 +450,7 @@ final class Schema
         )');
         if (!$this->sqlite) {
             $this->exec('CREATE INDEX IF NOT EXISTS idx_api_keys_user ON api_keys(user_uuid)');
+            // Prefix index covers full key length: 32 bytes × 2 = 64 hex chars (see ApiKey::KEY_HEX_LENGTH)
             $this->exec('CREATE INDEX IF NOT EXISTS idx_api_keys_key ON api_keys(api_key(64))');
         }
     }

@@ -9,8 +9,9 @@ declare(strict_types=1);
 final class ApiKey
 {
     private \PDO $pdo;
-    private const PREFIX_LEN = 8;
-    private const KEY_BYTES = 32;
+    private const PREFIX_LEN = 8;          // Display prefix (first 8 chars)
+    private const KEY_BYTES = 32;          // 32 random bytes
+    public const KEY_HEX_LENGTH = 64;      // 32 bytes × 2 = 64 hex chars (used in Schema index)
     private const RATE_LIMIT_PER_MIN = 60;
 
     public function __construct(\PDO $pdo)

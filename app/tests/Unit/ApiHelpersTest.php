@@ -45,6 +45,17 @@ final class ApiHelpersTest extends TestCase
         $this->assertSame($this->userUuid, $user['user_uuid']);
     }
 
+    public function testRequireAgentOrApiKeyReturnsUserWhenAgentTokenValid(): void
+    {
+        $_SERVER['HTTP_AUTHORIZATION'] = '';
+        $_SERVER['HTTP_X_AGENT_IDENTITY'] = 'agent-unit';
+        $agentIdentity = new AgentIdentity($this->pdo, new User($this->pdo));
+        $hooks = new Hooks($this->pdo);
+        $user = requireAgentOrApiKey($agentIdentity, $this->apiKeyRepo, $this->pdo, $hooks);
+        $this->assertSame('customer', $user['role']);
+        $this->assertNotEmpty($user['uuid']);
+    }
+
     public function testRequireAdminReturnsUserWhenAdmin(): void
     {
         $this->pdo->prepare('UPDATE users SET role = ? WHERE uuid = ?')->execute(['admin', $this->userUuid]);

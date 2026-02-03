@@ -19,6 +19,7 @@ final class SchemaTest extends TestCase
         $tables = ['users', 'stores', 'store_users', 'items', 'item_categories', 'packages', 'package_prices',
             'transactions', 'evm_transactions', 'transaction_statuses', 'transaction_intents', 'shipping_statuses',
             'payment_receipts', 'referral_payments', 'deposits', 'deposit_history', 'disputes', 'dispute_claims',
+            'registration_rate_limit', 'agent_identities', 'agent_requests', 'hooks', 'hook_events',
             'config', 'api_keys', 'api_key_requests', 'accepted_tokens'];
 
         foreach ($tables as $table) {

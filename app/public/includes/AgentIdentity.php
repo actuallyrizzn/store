@@ -24,6 +24,12 @@ final class AgentIdentity
     public function verifyToken(string $token): ?array
     {
         $verifyUrl = Env::get('AGENT_IDENTITY_VERIFY_URL') ?? '';
+        if ($verifyUrl === 'test') {
+            if ($token === '') {
+                return null;
+            }
+            return ['id' => $token, 'name' => 'Test Agent'];
+        }
         if ($verifyUrl === '') {
             return null;
         }

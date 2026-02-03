@@ -488,7 +488,19 @@ final class FullStackE2ETest extends E2ETestCase
     {
         $cookies = self::loginAs('admin', 'admin');
         $this->assertNotEmpty($cookies);
-        $res = self::runRequest(['method' => 'GET', 'uri' => 'api/transactions.php', 'get' => [], 'post' => [], 'headers' => [], 'cookies' => $cookies]);
+        $keyRes = self::runRequest(['method' => 'POST', 'uri' => 'api/keys.php', 'get' => [], 'post' => ['name' => 'e2e tx key'], 'headers' => [], 'cookies' => $cookies]);
+        $this->assertSame(200, $keyRes['code']);
+        $keyData = json_decode($keyRes['body'], true);
+        $apiKey = $keyData['api_key'] ?? '';
+        $this->assertNotSame('', $apiKey);
+        $res = self::runRequest([
+            'method' => 'GET',
+            'uri' => 'api/transactions.php',
+            'get' => [],
+            'post' => [],
+            'headers' => ['Authorization' => 'Bearer ' . $apiKey],
+            'cookies' => $cookies,
+        ]);
         $this->assertSame(200, $res['code']);
         $data = json_decode($res['body'], true);
         $this->assertArrayHasKey('transactions', $data);

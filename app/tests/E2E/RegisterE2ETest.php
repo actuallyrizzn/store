@@ -62,7 +62,7 @@ final class RegisterE2ETest extends E2ETestCase
     /** Second registration from same IP within rate limit window returns error message (not 302). */
     public function testPostRegisterSameIpWithinWindowReturnsRateLimitError(): void
     {
-        $remoteAddr = '127.0.0.99';
+        $remoteAddr = '127.0.0.' . (random_int(2, 254));
         $base = ['get' => [], 'headers' => [], 'remote_addr' => $remoteAddr];
         $getRes = self::runRequest(array_merge($base, ['method' => 'GET', 'uri' => 'register.php', 'post' => []]));
         $this->assertSame(200, $getRes['code']);

@@ -41,6 +41,7 @@ $_GET = $request['get'] ?? [];
 $_POST = $request['post'] ?? [];
 $_SERVER['HTTP_AUTHORIZATION'] = $request['headers']['Authorization'] ?? $request['headers']['authorization'] ?? '';
 $_SERVER['HTTP_X_API_KEY'] = $request['headers']['X-Api-Key'] ?? '';
+$_SERVER['HTTP_X_AGENT_IDENTITY'] = $request['headers']['X-Agent-Identity'] ?? '';
 $_COOKIE = isset($request['cookies']) && is_array($request['cookies']) ? $request['cookies'] : [];
 
 $appDir = dirname(__DIR__);

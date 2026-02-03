@@ -30,6 +30,7 @@ COOKIE_ENCRYPTION_SALT=test-cookie-salt
 CSRF_SALT=test-csrf-salt
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=admin
+AGENT_IDENTITY_VERIFY_URL=test
 ENV;
 file_put_contents($envPath, $envContent);
 register_shutdown_function(static function () use ($envPath, $envBackup): void {
@@ -49,6 +50,7 @@ require $inc . 'Schema.php';
 require $inc . 'Views.php';
 require $inc . 'StatusMachine.php';
 require $inc . 'api_helpers.php';
+require $inc . 'SkillGenerator.php';
 
 // Run schema and views on test DB (bootstrap already inited with app/ and our test .env)
 $pdo = Db::pdo();

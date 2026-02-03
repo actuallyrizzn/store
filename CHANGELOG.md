@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.5.3-dev] - 2026-02-03
+
+### Fixed
+
+- **Config.php: seedDefaults()** — Fixed SQLite-only `INSERT OR IGNORE` syntax causing failures on MariaDB/MySQL. Now branches on PDO driver first, using `INSERT OR IGNORE` for SQLite and `INSERT IGNORE` for MariaDB/MySQL. Added unit tests for MariaDB path with 100% coverage on Config class. Fixes issue #3.
+
+- **Test flakiness** — Fixed E2E test session isolation issue by using consistent session save path across test bootstrap and run_request.php subprocess.
+
+---
+
 ## [2.5.2-dev] - 2026-02-03
 
 ### Fixed

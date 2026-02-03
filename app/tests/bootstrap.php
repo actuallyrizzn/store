@@ -9,6 +9,20 @@ declare(strict_types=1);
 $appDir = dirname(__DIR__);
 define('TEST_BASE_DIR', $appDir);
 
+// Use a shared session save path for E2E tests to work properly across subprocesses
+$testSessionPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit_e2e_sessions';
+if (!is_dir($testSessionPath)) {
+    mkdir($testSessionPath, 0755, true);
+}
+ini_set('session.save_path', $testSessionPath);
+// Clean up old sessions from previous test runs at bootstrap
+$oldSessions = glob($testSessionPath . DIRECTORY_SEPARATOR . 'sess_*');
+if (is_array($oldSessions)) {
+    foreach ($oldSessions as $file) {
+        @unlink($file);
+    }
+}
+
 // Backup existing .env and write test .env (restored in shutdown)
 $envPath = $appDir . DIRECTORY_SEPARATOR . '.env';
 $envBackup = $envPath . '.backup.' . getmypid();

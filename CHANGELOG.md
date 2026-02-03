@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.5.10-dev] - 2026-02-03
+
+### Changed
+
+- **Standardize PDO::FETCH_ASSOC** — Converted all 56 occurrences of `PDO::FETCH_ASSOC` to `\PDO::FETCH_ASSOC` for consistency across `app/public/` and `app/tests/`. Fixes issue #17.
+
+---
+
 ## [2.5.9-dev] - 2026-02-03
 
 ### Documentation

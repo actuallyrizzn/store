@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.5.5-dev] - 2026-02-03
+
+### Security
+
+- **create-store.php** — Added CSRF protection to prevent cross-site request forgery attacks. Added hidden `csrf_token` input to form and validation in POST handler. Updated E2E test to include CSRF token. Fixes issue #5.
+
+---
+
 ## [2.5.4-dev] - 2026-02-03
 
 ### Fixed

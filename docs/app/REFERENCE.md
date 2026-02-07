@@ -135,7 +135,11 @@ php public/schema.php
 
 #### Run Cron Manually
 ```bash
+# From app/ directory
 python cron/cron.py
+
+# From repo root
+python app/cron/cron.py
 ```
 
 ### File Locations
@@ -280,6 +284,6 @@ All documentation files are in **`docs/app/`** (workspace root).
 
 ---
 
-**Index Version**: 1.0  
-**Last Updated**: January 31, 2026  
+**Index Version**: 1.0.1  
+**Last Updated**: February 7, 2026  
 **Documentation Maintainer**: Development Team

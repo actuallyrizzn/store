@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.5.16-dev] - 2026-02-07
+
+### Documentation
+
+- **REFERENCE.md** — Clarified cron manual run commands for both `app/` and repo root CWDs. Fixes issue #34.
+
+---
+
 ## [2.5.15-dev] - 2026-02-03
 
 ### Documentation

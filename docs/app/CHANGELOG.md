@@ -4,6 +4,12 @@ All notable changes to the documentation will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.0.1] - 2026-02-07
+
+### Documentation
+
+- **REFERENCE.md** — Clarified cron manual run commands for both `app/` and repo root CWDs. Fixes issue #34.
+
 ## [1.0.0] - 2026-01-31
 
 ### Added
@@ -272,6 +278,6 @@ For documentation questions:
 
 ---
 
-**Changelog Version**: 1.0  
-**Last Updated**: January 31, 2026  
+**Changelog Version**: 1.0.1  
+**Last Updated**: February 7, 2026  
 **Maintained By**: Development Team

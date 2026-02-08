@@ -85,6 +85,28 @@ final class StoresApiE2ETest extends E2ETestCase
         $this->assertSame(200, $res['code']);
         $data = json_decode($res['body'], true);
         $this->assertTrue($data['ok'] ?? false);
-        $this->assertNotEmpty($data['uuid'] ?? '');
+        $createdUuid = $data['uuid'] ?? '';
+        $this->assertNotEmpty($createdUuid);
+
+        // Ensure the create path (User::generateUuid in api/stores.php) is hit; verify store appears in GET (issue #22)
+        $getRes = self::runRequest([
+            'method' => 'GET',
+            'uri' => 'api/stores.php',
+            'get' => [],
+            'post' => [],
+            'headers' => [],
+            'cookies' => $cookies,
+        ]);
+        $this->assertSame(200, $getRes['code']);
+        $list = json_decode($getRes['body'], true);
+        $this->assertArrayHasKey('stores', $list);
+        $found = false;
+        foreach ($list['stores'] as $s) {
+            if (($s['uuid'] ?? '') === $createdUuid || ($s['storename'] ?? '') === $storename) {
+                $found = true;
+                break;
+            }
+        }
+        $this->assertTrue($found, 'Created store should appear in GET api/stores.php');
     }
 }

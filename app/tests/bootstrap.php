@@ -98,4 +98,25 @@ if ($adminUsername !== null && $adminUsername !== '') {
         $hash = password_hash($customerPassword, PASSWORD_BCRYPT, ['cost' => 12]);
         $pdo->prepare('UPDATE users SET passphrase_hash = ?, role = ? WHERE uuid = ?')->execute([$hash, 'customer', $cust['uuid']]);
     }
+    $cust = $userRepo->findByUsername($customerUsername);
+    if ($cust !== null && !defined('E2E_PACKAGE_UUID')) {
+        // E2E: one store, one item, one package for transaction/book flow tests (issue #22)
+        $storeUuid = $pdo->query("SELECT store_uuid FROM store_users WHERE user_uuid = " . $pdo->quote($cust['uuid']) . " LIMIT 1")->fetchColumn();
+        if ($storeUuid === false) {
+            $storeUuid = User::generateUuid();
+            $now = date('Y-m-d H:i:s');
+            $storename = 'e2e_store_' . substr(str_replace(['.', ' '], '', (string) microtime(true)), -8);
+            $pdo->prepare('INSERT INTO stores (uuid, storename, description, created_at, updated_at) VALUES (?, ?, ?, ?, ?)')->execute([$storeUuid, $storename, 'E2E store', $now, $now]);
+            $pdo->prepare('INSERT INTO store_users (store_uuid, user_uuid, role) VALUES (?, ?, ?)')->execute([$storeUuid, $cust['uuid'], 'owner']);
+        }
+        $packageUuid = $pdo->query("SELECT uuid FROM packages WHERE store_uuid = " . $pdo->quote($storeUuid) . " AND (deleted_at IS NULL OR deleted_at = '') LIMIT 1")->fetchColumn();
+        if ($packageUuid === false) {
+            $now = date('Y-m-d H:i:s');
+            $itemUuid = User::generateUuid();
+            $pdo->prepare('INSERT INTO items (uuid, name, description, store_uuid, created_at) VALUES (?, ?, ?, ?, ?)')->execute([$itemUuid, 'E2E Item', 'For E2E transaction tests', $storeUuid, $now]);
+            $packageUuid = User::generateUuid();
+            $pdo->prepare('INSERT INTO packages (uuid, item_uuid, store_uuid, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)')->execute([$packageUuid, $itemUuid, $storeUuid, 'E2E Package', $now, $now]);
+        }
+        define('E2E_PACKAGE_UUID', $packageUuid);
+    }
 }

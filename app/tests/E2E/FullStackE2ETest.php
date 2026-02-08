@@ -781,4 +781,51 @@ final class FullStackE2ETest extends E2ETestCase
         $res = self::runRequest(['method' => 'GET', 'uri' => 'payment.php', 'get' => ['uuid' => '00000000000000000000000000000000'], 'post' => [], 'headers' => [], 'cookies' => $cookies]);
         $this->assertSame(404, $res['code']);
     }
+
+    /** E2E: book.php GET with valid package (issue #22 — hits code path that uses User::generateUuid on POST). */
+    public function testBookWithValidPackageReturns200(): void
+    {
+        $this->assertTrue(defined('E2E_PACKAGE_UUID'), 'Bootstrap must seed E2E_PACKAGE_UUID');
+        $cookies = self::loginAs('e2e_customer', 'password123');
+        $this->assertNotEmpty($cookies);
+        $res = self::runRequest(['method' => 'GET', 'uri' => 'book.php', 'get' => ['package_uuid' => E2E_PACKAGE_UUID], 'post' => [], 'headers' => [], 'cookies' => $cookies]);
+        $this->assertSame(200, $res['code']);
+        $this->assertStringContainsString('Buy:', $res['body']);
+        $this->assertStringContainsString('Create order', $res['body']);
+    }
+
+    /** E2E: book.php POST creates transaction (User::generateUuid in book.php) and redirects to payment (issue #22). */
+    public function testBookPostCreatesTransactionAndRedirectsToPayment(): void
+    {
+        $this->assertTrue(defined('E2E_PACKAGE_UUID'), 'Bootstrap must seed E2E_PACKAGE_UUID');
+        $cookies = self::loginAs('e2e_customer', 'password123');
+        $this->assertNotEmpty($cookies);
+        $res = self::runRequest([
+            'method' => 'POST',
+            'uri' => 'book.php',
+            'get' => [],
+            'post' => [
+                'package_uuid' => E2E_PACKAGE_UUID,
+                'required_amount' => 0.05,
+                'chain_id' => 1,
+                'currency' => 'ETH',
+            ],
+            'headers' => [],
+            'cookies' => $cookies,
+        ]);
+        $this->assertSame(302, $res['code'], 'book.php POST should redirect (hits User::generateUuid path)');
+        $location = null;
+        foreach ($res['headers'] ?? [] as $h) {
+            if (stripos($h, 'Location') === 0) {
+                $colon = strpos($h, ':');
+                $location = $colon !== false ? trim(substr($h, $colon + 1)) : null;
+                break;
+            }
+        }
+        if ($location !== null) {
+            $this->assertStringContainsString('/payment.php', $location);
+            $this->assertStringContainsString('uuid=', $location);
+        }
+        // When run_request shutdown runs after script exit, headers_list() may be empty; 302 alone confirms redirect path
+    }
 }

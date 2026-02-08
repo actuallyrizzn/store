@@ -10,6 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [2.5.16-dev] - 2026-02-07
 
+### Added
+
+- **E2E tests (issue #22)** — Store creation: after POST api/stores.php, GET api/stores.php and assert the new store appears. Transaction creation: POST api/transactions.php with session + CSRF + valid package (bootstrap seeds E2E_PACKAGE_UUID). Book flow: GET book.php with valid package returns 200; POST book.php creates transaction and returns 302 (hits User::generateUuid in api/stores.php, api/transactions.php, book.php).
+- **Integration test (issue #23)** — ConfigIntegrationTest::testSeedDefaultsOnMariaDBWhenAvailable(): when TEST_MARIADB_DSN is set, runs schema + views + Config::seedDefaults() against MariaDB and asserts expected keys; skipped otherwise.
+- **docs/planning/INLINE-REFS.md (issue #24)** — Verification table of inline planning doc refs (01 §9–§12, 08.9, v2.5) in code; all refs confirmed accurate.
+
+### Changed
+
+- **tests/bootstrap.php** — Seed one store, item, and package for e2e_customer when E2E_PACKAGE_UUID is not defined; define E2E_PACKAGE_UUID for E2E transaction/book tests.
+
 ### Documentation
 
 - **REFERENCE.md** — Clarified cron manual run commands for both `app/` and repo root CWDs. Fixes issue #34.
